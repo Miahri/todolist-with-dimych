@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import {TodolistWithRedux} from "./TodolistWithRedux";
 import {AddItemForm} from "./AddItemForm";
 import {
     AppBar,
@@ -44,9 +44,9 @@ export type TodolistType = {
     filter: FilterType
 }
 
-export type AllTasksType = {
+/*export type AllTasksType = {
     [key: string]: Array<TaskType>
-}
+}*/
 
 function AppWithRedux() {
     const classes = useStyles();
@@ -96,7 +96,7 @@ function AppWithRedux() {
                             return (
                                 <Grid item>
                                     <Paper style={{padding: "10px"}}>
-                                        <Todolist key={tl.id}
+                                        <TodolistWithRedux key={tl.id}
                                                   id={tl.id}
                                                   title={tl.title}
                                                   changeFilter={changeFilter}
@@ -112,6 +112,6 @@ function AppWithRedux() {
             </div>
         </div>
     );
-};
+}
 
 export default AppWithRedux;

@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer} from 'react';
 import './App.css';
 import {v1} from "uuid";
 import {TaskType, Todolist} from "./Todolist";
@@ -45,9 +45,9 @@ export type TodolistType = {
     filter: FilterType
 }
 
-export type AllTasksType = {
+/*export type AllTasksType = {
     [key: string]: Array<TaskType>
-}
+}*/
 
 function AppWithReducers() {
     const classes = useStyles();
@@ -168,3 +168,4 @@ function AppWithReducers() {
 }
 
 export default AppWithReducers;
+

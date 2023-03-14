@@ -4,6 +4,9 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@material-ui/core";
 import { Delete } from '@material-ui/icons';
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootState} from "./state/store";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 
 export type TaskType = {
     id: string
@@ -14,22 +17,47 @@ export type TaskType = {
 type TodolistPropsType = {
     id: string
     title: string
-    tasks: Array<TaskType>
-    removeTask: (id: string, todoListId: string) => void
     changeFilter: (filter: FilterType, todoListId: string) => void
-    addTask: (title: string, todoListId: string) => void
-    changeStatus: (id: string, status: boolean, todoListId: string) => void
-    onChangeTaskTitle: (id: string, title: string, todoListId: string) => void
     onChangeTLTitle: (title: string, todoListId: string) => void
     deleteTodoList: (todoListId: string) => void
     filter: FilterType
 }
 
-export const Todolist = (props: TodolistPropsType) => {
+export const TodolistWithRedux = (props: TodolistPropsType) => {
+    const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id]);
+    const dispatch = useDispatch();
+
+    let filteredTasks = tasks;
+    if (props.filter === 'active') {
+        filteredTasks = filteredTasks.filter((t: TaskType) => !t.isDone)
+    }
+    if (props.filter === 'completed') {
+        filteredTasks = filteredTasks.filter((t: TaskType) => t.isDone)
+    }
+
+    const addTask = (title: string, todoListId: string) => {
+        const action = addTaskAC(title, todoListId);
+        dispatch(action);
+    }
+
+    const removeTask = (id: string, todoListId: string) => {
+        const action = removeTaskAC(id, todoListId);
+        dispatch(action);
+    }
+
+    const changeStatus = (id: string, status: boolean, todoListId: string) => {
+        const action = changeTaskStatusAC(id, status, todoListId);
+        dispatch(action);
+    }
+
+    const onChangeTaskTitle = (id: string, title: string, todoListId: string) => {
+        dispatch(changeTaskTitleAC(id, title, todoListId));
+    }
+
     const changeFilter = (filter: FilterType) => props.changeFilter(filter, props.id);
 
     const deleteTodoList = () => props.deleteTodoList(props.id);
-    const addTask = (title: string) => props.addTask(title, props.id);
+    const addTaskUniversal = (title: string) => addTask(title, props.id);
     const onChangeTLTitle = (title: string) => props.onChangeTLTitle(title, props.id);
 
     return (
@@ -38,27 +66,26 @@ export const Todolist = (props: TodolistPropsType) => {
             <IconButton onClick={deleteTodoList}>
                 <Delete />
             </IconButton>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTaskUniversal} />
             <div>
                 <ul>
-                    {props.tasks.map((t: TaskType) => {
-                        const removeTask = () => props.removeTask(t.id, props.id);
-                        const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeStatus(t.id, e.currentTarget.checked, props.id)
+                    {filteredTasks.map((t: TaskType) => {
+                        const changeStatusListener = (e: ChangeEvent<HTMLInputElement>) => {
+                            changeStatus(t.id, e.currentTarget.checked, props.id)
                         }
-                        const onChangeTaskTitle = (title: string) => {
-                            props.onChangeTaskTitle(t.id, title, props.id)
+                        const onChangeTaskTitleListener = (title: string) => {
+                            onChangeTaskTitle(t.id, title, props.id)
                         }
 
                         return (
                             <li key={t.id}>
                                 <Checkbox
                                     checked={t.isDone}
-                                    onChange={changeStatus}
+                                    onChange={changeStatusListener}
                                     color="primary"
                                 />
-                                <EditableSpan title={t.title} onChange={onChangeTaskTitle}/>
-                                <IconButton onClick={removeTask}>
+                                <EditableSpan title={t.title} onChange={onChangeTaskTitleListener}/>
+                                <IconButton onClick={() => removeTask}>
                                     <Delete />
                                 </IconButton>
                             </li>
