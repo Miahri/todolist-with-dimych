@@ -19,6 +19,9 @@ export const AddItemForm = (props: AddItemFormProps) => {
     };
     const inputValueChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value);
     const keyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if(error !== null) {
+            setError(null);
+        }
         if (e.code === 'Enter') {
             if (inputValue.trim() === '') {
                 setError('Title is required');
