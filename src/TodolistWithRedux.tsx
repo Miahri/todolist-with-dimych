@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -35,11 +35,6 @@ export const TodolistWithRedux = (props: TodolistPropsType) => {
         filteredTasks = filteredTasks.filter((t: TaskType) => t.isDone)
     }
 
-    const addTask = (title: string, todoListId: string) => {
-        const action = addTaskAC(title, todoListId);
-        dispatch(action);
-    }
-
     const removeTask = (id: string, todoListId: string) => {
         const action = removeTaskAC(id, todoListId);
         dispatch(action);
@@ -57,7 +52,10 @@ export const TodolistWithRedux = (props: TodolistPropsType) => {
     const changeFilter = (filter: FilterType) => props.changeFilter(filter, props.id);
 
     const deleteTodoList = () => props.deleteTodoList(props.id);
-    const addTaskUniversal = (title: string) => addTask(title, props.id);
+    const addTask = useCallback((title: string) => {
+        const action = addTaskAC(title, props.id);
+        dispatch(action);
+    }, []);
     const onChangeTLTitle = (title: string) => props.onChangeTLTitle(title, props.id);
 
     return (
@@ -66,7 +64,7 @@ export const TodolistWithRedux = (props: TodolistPropsType) => {
             <IconButton onClick={deleteTodoList}>
                 <Delete />
             </IconButton>
-            <AddItemForm addItem={addTaskUniversal} />
+            <AddItemForm addItem={addTask} />
             <div>
                 <ul>
                     {filteredTasks.map((t: TaskType) => {
