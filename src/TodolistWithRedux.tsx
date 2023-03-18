@@ -23,7 +23,7 @@ type TodolistPropsType = {
     filter: FilterType
 }
 
-export const TodolistWithRedux = (props: TodolistPropsType) => {
+export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id]);
     const dispatch = useDispatch();
 
@@ -35,28 +35,34 @@ export const TodolistWithRedux = (props: TodolistPropsType) => {
         filteredTasks = filteredTasks.filter((t: TaskType) => t.isDone)
     }
 
-    const removeTask = (id: string, todoListId: string) => {
+    const removeTask = useCallback((id: string, todoListId: string) => {
         const action = removeTaskAC(id, todoListId);
         dispatch(action);
-    }
+    }, [dispatch])
 
-    const changeStatus = (id: string, status: boolean, todoListId: string) => {
+    const changeStatus = useCallback((id: string, status: boolean, todoListId: string) => {
         const action = changeTaskStatusAC(id, status, todoListId);
         dispatch(action);
-    }
+    }, [dispatch])
 
-    const onChangeTaskTitle = (id: string, title: string, todoListId: string) => {
+    const onChangeTaskTitle = useCallback((id: string, title: string, todoListId: string) => {
         dispatch(changeTaskTitleAC(id, title, todoListId));
-    }
+    }, [dispatch])
 
-    const changeFilter = (filter: FilterType) => props.changeFilter(filter, props.id);
+    const changeFilter = useCallback((filter: FilterType) => {
+        props.changeFilter(filter, props.id);
+    }, [props.changeFilter, props.id])
 
-    const deleteTodoList = () => props.deleteTodoList(props.id);
+    const deleteTodoList = useCallback(() => {
+        props.deleteTodoList(props.id)
+    }, [props.deleteTodoList, props.id]);
     const addTask = useCallback((title: string) => {
         const action = addTaskAC(title, props.id);
         dispatch(action);
-    }, []);
-    const onChangeTLTitle = (title: string) => props.onChangeTLTitle(title, props.id);
+    }, [dispatch]);
+    const onChangeTLTitle = useCallback((title: string) => {
+        props.onChangeTLTitle(title, props.id)
+    }, [props.onChangeTLTitle, props.id])
 
     return (
         <div>
@@ -106,7 +112,7 @@ export const TodolistWithRedux = (props: TodolistPropsType) => {
             </div>
         </div>
     )
-}
+})
 
 /*
 <input type="checkbox"
