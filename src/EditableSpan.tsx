@@ -6,7 +6,7 @@ type EditableSpanProps = {
     onChange: (title: string) => void
 }
 
-export const EditableSpan = (props: EditableSpanProps) => {
+export const EditableSpan = React.memo((props: EditableSpanProps) => {
     let [editMode, setEditMode] = useState(false);
     let [inputValue, setValue] = useState('');
 
@@ -33,4 +33,4 @@ export const EditableSpan = (props: EditableSpanProps) => {
                autoFocus
                variant="outlined" />
     )
-}
+})
