@@ -5,16 +5,15 @@ import {AddItemForm} from "./AddItemForm";
 import {
     AppBar,
     Container,
-    createStyles,
     Grid,
     IconButton,
-    makeStyles,
     Paper,
-    Theme,
     Toolbar,
     Typography
-} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
+import {Menu} from "@mui/icons-material";
 import {
     addTodolistAC,
     changeFilterAC,
@@ -24,17 +23,17 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 
+const theme = createTheme();
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-    }),
-);
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        flexGrow: 1,
+
+    },
+    menuButton: {
+        marginRight: theme.spacing(2)
+    }
+}));
 
 export type FilterType = 'all' | 'active' | 'completed'
 
@@ -44,11 +43,7 @@ export type TodolistType = {
     filter: FilterType
 }
 
-/*export type AllTasksType = {
-    [key: string]: Array<TaskType>
-}*/
-
-function AppWithRedux() {
+const Component = () => {
     const classes = useStyles();
 
     const dispatch = useDispatch();
@@ -97,12 +92,12 @@ function AppWithRedux() {
                                 <Grid item>
                                     <Paper style={{padding: "10px"}}>
                                         <TodolistWithRedux key={tl.id}
-                                                  id={tl.id}
-                                                  title={tl.title}
-                                                  changeFilter={changeFilter}
-                                                  onChangeTLTitle={onChangeTLTitle}
-                                                  deleteTodoList={deleteTodoList}
-                                                  filter={tl.filter}/>
+                                                           id={tl.id}
+                                                           title={tl.title}
+                                                           changeFilter={changeFilter}
+                                                           onChangeTLTitle={onChangeTLTitle}
+                                                           deleteTodoList={deleteTodoList}
+                                                           filter={tl.filter}/>
                                     </Paper>
                                 </Grid>
                             )
@@ -114,4 +109,6 @@ function AppWithRedux() {
     );
 }
 
-export default AppWithRedux;
+export function AppWithRedux() {
+    return <ThemeProvider theme={theme}><Component /></ThemeProvider>
+}

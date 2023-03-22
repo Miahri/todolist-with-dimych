@@ -6,16 +6,15 @@ import {AddItemForm} from "./AddItemForm";
 import {
     AppBar,
     Container,
-    createStyles,
     Grid,
     IconButton,
-    makeStyles,
     Paper,
-    Theme,
     Toolbar,
     Typography
-} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+} from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
+import {Menu} from "@mui/icons-material";
 import {
     addTodolistAC,
     changeFilterAC,
@@ -25,17 +24,17 @@ import {
 } from "./state/todolist-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 
+const theme = createTheme();
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-    }),
-);
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        flexGrow: 1,
+
+    },
+    menuButton: {
+        marginRight: theme.spacing(2)
+    }
+}));
 
 export type FilterType = 'all' | 'active' | 'completed'
 
@@ -45,11 +44,7 @@ export type TodolistType = {
     filter: FilterType
 }
 
-/*export type AllTasksType = {
-    [key: string]: Array<TaskType>
-}*/
-
-function AppWithReducers() {
+const Component = () => {
     const classes = useStyles();
 
     const addTask = (title: string, todoListId: string) => {
@@ -167,5 +162,9 @@ function AppWithReducers() {
     );
 }
 
-export default AppWithReducers;
+export function AppWithReducers() {
+    return <ThemeProvider theme={theme}><Component /></ThemeProvider>
+}
+
+
 
