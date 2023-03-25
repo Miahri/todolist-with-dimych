@@ -1,18 +1,13 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import {FilterType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import {Button, IconButton} from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {Task, TaskType} from "./Task";
 
 type TodolistPropsType = {
     id: string
@@ -100,35 +95,4 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
             </div>
         </div>
     )
-})
-
-type TaskPropsType = {
-    todolistId: string
-    task: TaskType
-    changeStatus: (id: string, status: boolean, todolistId: string) => void
-    onChangeTaskTitle: (id: string, title: string, todolistId: string) => void
-    removeTask: (id: string, todolistId: string) => void
-}
-
-const Task = React.memo((props: TaskPropsType) => {
-    const changeStatusListener = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeStatus(props.task.id, e.currentTarget.checked, props.todolistId)
-    }
-    const onChangeTaskTitleListener = (title: string) => {
-        props.onChangeTaskTitle(props.task.id, title, props.todolistId)
-    }
-
-    return (
-        <li key={props.task.id}>
-            <Checkbox
-                checked={props.task.isDone}
-                onChange={changeStatusListener}
-                color="primary"
-            />
-            <EditableSpan title={props.task.title} onChange={onChangeTaskTitleListener}/>
-            <IconButton onClick={() => props.removeTask(props.task.id, props.todolistId)}>
-                <Delete />
-            </IconButton>
-        </li>
-    )
-})
+});
