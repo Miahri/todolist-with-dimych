@@ -2,7 +2,7 @@ import {action} from '@storybook/addon-actions'
 import {Task} from "../Task";
 
 export default {
-    title: 'Task',
+    title: 'TODOLIST/Task',
     component: Task
 }
 

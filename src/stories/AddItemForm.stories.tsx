@@ -2,7 +2,7 @@ import {AddItemForm} from "../AddItemForm";
 import {action} from '@storybook/addon-actions'
 
 export default {
-    title: 'AddItemForm',
+    title: 'TODOLIST/AddItemForm',
     component: AddItemForm
 }
 
