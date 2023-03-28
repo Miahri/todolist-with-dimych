@@ -16,7 +16,7 @@ const config: StorybookConfig = {
         },
         loaderOptions: {
           prettierConfig: {
-            printWidth: 88, singleQuote: false,
+            printWidth: 80, singleQuote: false,
             options: {parser: 'typescript'}
           },
         },
