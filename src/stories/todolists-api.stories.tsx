@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {todolistsAPI} from "../todolists-api";
 
 export default {
