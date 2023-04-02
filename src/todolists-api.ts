@@ -14,24 +14,30 @@ export type TodolistType = {
     order: number
 }
 
-type CreateTodolistResponseType = {
-    resultCode: number
-    messages: Array<string>
-    data: {
-        item: TodolistType
-    }
-}
+// type CreateTodolistResponseType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {
+//         item: TodolistType
+//     }
+// }
+//
+// type DeleteTodolistResponseType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }
+//
+// type UpdateTodolistResponseType = {
+//     resultCode: number
+//     messages: Array<string>
+//     data: {}
+// }
 
-type DeleteTodolistResponseType = {
+type ResponseType<D> = {
     resultCode: number
     messages: Array<string>
-    data: {}
-}
-
-type UpdateTodolistResponseType = {
-    resultCode: number
-    messages: Array<string>
-    data: {}
+    data: D
 }
 
 export const todolistsAPI = {
@@ -40,15 +46,15 @@ export const todolistsAPI = {
         return promise;
     },
     createTodolist(title: string) {
-        const promise = axios.post<CreateTodolistResponseType>('https://social-network.samuraijs.com/api/1.1/todo_lists', {title: title}, settings);
+        const promise = axios.post<ResponseType<{item: TodolistType}>>('https://social-network.samuraijs.com/api/1.1/todo_lists', {title: title}, settings);
         return promise;
     },
     deleteTodolist(id: string) {
-        const promise = axios.delete<DeleteTodolistResponseType>(`https://social-network.samuraijs.com/api/1.1/todo_lists/${id}`, settings);
+        const promise = axios.delete<ResponseType<{}>>(`https://social-network.samuraijs.com/api/1.1/todo_lists/${id}`, settings);
         return promise;
     },
     updateTodolistTitle(id: string, title: string) {
-        const promise = axios.put<UpdateTodolistResponseType>(`https://social-network.samuraijs.com/api/1.1/todo_lists/${id}`, {title: title}, settings);
+        const promise = axios.put<ResponseType<{}>>(`https://social-network.samuraijs.com/api/1.1/todo_lists/${id}`, {title: title}, settings);
         return promise;
     }
 }
