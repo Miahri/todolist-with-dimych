@@ -19,6 +19,20 @@ export type TodolistType = {
     order: number
 }
 
+export type TaskType = {
+    description: string
+    title: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
 // type CreateTodolistResponseType = {
 //     resultCode: number
 //     messages: Array<string>
@@ -39,10 +53,26 @@ export type TodolistType = {
 //     data: {}
 // }
 
-type ResponseType<D> = {
+type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
     data: D
+}
+
+type GetTasksResponseType = {
+    totalCount: number
+    error: string | null
+    items: Array<TaskType>
+}
+
+type UpdateTaskType = {
+    title: string
+    description: string
+    completed: boolean
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
 }
 
 export const todolistsAPI = {
@@ -55,11 +85,17 @@ export const todolistsAPI = {
         return promise;
     },
     deleteTodolist(id: string) {
-        const promise = instance.delete<ResponseType<{}>>(`todo-lists/${id}`);
+        const promise = instance.delete<ResponseType>(`todo-lists/${id}`);
         return promise;
     },
     updateTodolistTitle(id: string, title: string) {
-        const promise = instance.put<ResponseType<{}>>(`todo-lists/${id}`, {title: title});
+        const promise = instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
         return promise;
-    }
+    },
+    getTasks(todolistID: string) {
+        return instance.get<GetTasksResponseType>(`todo-lists${todolistID}/tasks`);
+    },
+    deleteTask(id: string, todolistID: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistID}/tasks/${id}`);
+    },
 }
