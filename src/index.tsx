@@ -5,11 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import {AppWithRedux} from "./AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./state/store";
+import {App} from "./App/App";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(<Provider store={store}><AppWithRedux /></Provider>);
+root.render(<Provider store={store}><App /></Provider>);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
-import './App.css';
+import React from 'react';
+import '../App.css';
 import {v1} from "uuid";
-import {TaskType, Todolist} from "./Todolist";
-import {AddItemForm} from "./AddItemForm";
+import {TaskType, Todolist} from "../Todolist";
+import {AddItemForm} from "../AddItemForm";
 import {
     AppBar,
     Container,
@@ -15,6 +15,9 @@ import {
 import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
+import {todoListId1, todoListId2} from "./id-utils";
+import {useTasks} from "./hooks/useTasks";
+import {useTodolists} from "./hooks/useTodolists";
 
 const theme = createTheme();
 
@@ -45,14 +48,16 @@ export function App() {
 }
 
 const Component = () => {
+    const [todoLists, setTodolist] = useTodolists();
+    const {
+        tasks,
+        setTasks,
+        addTask,
+        removeTask,
+        changeStatus,
+        onChangeTaskTitle
+    } = useTasks();
     const classes = useStyles();
-
-    const addTask = (title: string, todoListId: string) => {
-        let newTask: TaskType = {id: v1(), title: title, isDone: false};
-        let result = tasks[todoListId];
-        tasks[todoListId] = [newTask, ...result];
-        setTasks({...tasks});
-    }
 
     const addTodoList = (title: string) => {
         let newTList: TodolistType = {
@@ -64,23 +69,8 @@ const Component = () => {
         setTasks({[newTList.id]: [], ...tasks});
     }
 
-    const removeTask = (id: string, todoListId: string) => {
-        tasks[todoListId] = tasks[todoListId].filter((t: TaskType) => t.id !== id);
-        setTasks({...tasks})
-    }
-
     const changeFilter = (filter: FilterType, todoListId: string) => {
         setTodolist(todoLists.map((tl:TodolistType) => tl.id === todoListId ? {...tl, filter: filter} : tl))
-    }
-
-    const changeStatus = (id: string, status: boolean, todoListId: string) => {
-        tasks[todoListId] = tasks[todoListId].map((t:TaskType) => t.id === id ? {...t, isDone: status} : t);
-        setTasks({...tasks});
-    }
-
-    const onChangeTaskTitle = (id: string, title: string, todoListId: string) => {
-        tasks[todoListId] = tasks[todoListId].map((t:TaskType) => t.id === id ? {...t, title: title} : t);
-        setTasks({...tasks});
     }
 
     const onChangeTLTitle = (title: string, todoListId: string) => {
@@ -94,27 +84,6 @@ const Component = () => {
         delete tasks[todoListId];
         setTasks({...tasks})
     }
-
-    let todoListId1 = v1();
-    let todoListId2 = v1();
-
-    let [todoLists, setTodolist] = useState<Array<TodolistType>>([
-        {id: todoListId1, title: 'What to learn', filter: 'all'},
-        {id: todoListId2, title: 'What to buy', filter: 'all'},
-    ]);
-
-    let [tasks, setTasks] = useState<AllTasksType>({
-        [todoListId1]: [
-            {id: v1(), title: 'HTML', isDone: true},
-            {id: v1(), title: 'CSS', isDone: true},
-            {id: v1(), title: 'React', isDone: false},
-            {id: v1(), title: 'Redux', isDone: false},
-        ],
-        [todoListId2]: [
-            {id: v1(), title: 'Milk', isDone: true},
-            {id: v1(), title: 'Book', isDone: false},
-        ]
-    })
 
     return (
         <div>
