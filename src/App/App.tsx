@@ -48,42 +48,24 @@ export function App() {
 }
 
 const Component = () => {
-    const [todoLists, setTodolist] = useTodolists();
     const {
         tasks,
-        setTasks,
         addTask,
         removeTask,
         changeStatus,
-        onChangeTaskTitle
+        onChangeTaskTitle,
+        completelyRemoveTasksForTodolist,
+        addStateForNewTodolist
     } = useTasks();
+    const {
+        todoLists,
+        changeFilter,
+        onChangeTLTitle,
+        deleteTodoList,
+        addTodoList
+    } = useTodolists(completelyRemoveTasksForTodolist, addStateForNewTodolist);
+
     const classes = useStyles();
-
-    const addTodoList = (title: string) => {
-        let newTList: TodolistType = {
-            id: v1(),
-            title: title,
-            filter: 'all'
-        };
-        setTodolist([newTList, ...todoLists]);
-        setTasks({[newTList.id]: [], ...tasks});
-    }
-
-    const changeFilter = (filter: FilterType, todoListId: string) => {
-        setTodolist(todoLists.map((tl:TodolistType) => tl.id === todoListId ? {...tl, filter: filter} : tl))
-    }
-
-    const onChangeTLTitle = (title: string, todoListId: string) => {
-        setTodolist(todoLists.map((tl:TodolistType) => tl.id === todoListId ? {...tl, title: title} : tl))
-    }
-
-    const deleteTodoList = (todoListId: string) => {
-        let result = todoLists.filter((tl: TodolistType) => todoListId !== tl.id);
-        setTodolist(result);
-
-        delete tasks[todoListId];
-        setTasks({...tasks})
-    }
 
     return (
         <div>
