@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import './App.css';
 import {TodolistWithRedux} from "./TodolistWithRedux";
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {
     AppBar,
     Container,
