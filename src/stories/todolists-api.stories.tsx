@@ -5,13 +5,6 @@ export default {
     title: 'TODOLIST/API'
 }
 
-const settings = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': 'c85010c8-14b3-4039-b4af-7e02411657e5'
-    }
-}
-
 export const GetTodolists = () => {
 
     const [state, setState] = useState<any>(null)
@@ -107,5 +100,61 @@ export const DeleteTask = () => {
         <input placeholder={"taskID"} value={taskID} onChange={(e) => setTaskID(e.currentTarget.value)}/>
         <input placeholder={"todolistID"} value={todolistID} onChange={(e) => setTodolistID(e.currentTarget.value)}/>
         <button onClick={onClickHandler}>Delete task</button>
+    </div>
+}
+
+export const CreateTask = () => {
+
+    const [state, setState] = useState<any>(null);
+    const [todolistID, setTodolistID] = useState<string>('');
+    const [taskTitle, setTaskTitle] = useState<string>('');
+
+    const onClickHandler = () => {
+        todolistsAPI.createTask(taskTitle, todolistID)
+            .then((res) => {
+                setState(res.data);
+            })
+    }
+
+    return <div>
+        {JSON.stringify(state)}
+        <input placeholder={"taskTitle"} value={taskTitle} onChange={(e) => setTaskTitle(e.currentTarget.value)}/>
+        <input placeholder={"todolistID"} value={todolistID} onChange={(e) => setTodolistID(e.currentTarget.value)}/>
+        <button onClick={onClickHandler}>Create task</button>
+    </div>
+}
+
+export const UpdateTask = () => {
+
+    const [title, setTitle] = useState<string>('new title');
+    const [description, setDescription] = useState<string>('new description');
+    const [status, setStatus] = useState<number>(0);
+    const [priority, setPriority] = useState<number>(0);
+    const [startDate, setStartDate] = useState<string>('');
+    const [deadline, setDeadline] = useState<string>('');
+
+    const [state, setState] = useState<any>(null);
+    const [todolistID, setTodolistID] = useState<string>('');
+    const [taskID, setTaskID] = useState<string>('');
+
+    const onClickHandler = () => {
+        todolistsAPI.updateTask(taskID, todolistID,
+            {title, description, status, priority, startDate, deadline})
+            .then((res) => {
+                setState(res.data);
+            })
+    }
+
+    return <div>
+        {JSON.stringify(state)}
+        <input placeholder={"taskID"} value={taskID} onChange={(e) => setTaskID(e.currentTarget.value)}/>
+        <input placeholder={"todolistID"} value={todolistID} onChange={(e) => setTodolistID(e.currentTarget.value)}/>
+        <input placeholder={"title"} value={title} onChange={(e) => setTitle(e.currentTarget.value)}/>
+        <input placeholder={"description"} value={description} onChange={(e) => setDescription(e.currentTarget.value)}/>
+        <input placeholder={"status"} type={"number"} value={status} onChange={(e) => setStatus(+e.currentTarget.value)}/>
+        <input placeholder={"priority"} type={"number"} value={priority} onChange={(e) => setPriority(+e.currentTarget.value)}/>
+        <input placeholder={"startDate"} value={startDate} onChange={(e) => setStartDate(e.currentTarget.value)}/>
+        <input placeholder={"deadline"} value={deadline} onChange={(e) => setDeadline(e.currentTarget.value)}/>
+        <button onClick={onClickHandler}>Create task</button>
     </div>
 }
