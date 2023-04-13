@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../App.css';
 import {TodolistWithRedux} from "../TodolistWithRedux";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
@@ -15,6 +15,8 @@ import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
 import {useAppWithRedux} from "./hooks/useAppWithRedux";
+import {fetchTodolistsTC, TodolistDomainType} from "../state/todolist-reducer";
+import {useAppDispatch} from "../state/store";
 
 const theme = createTheme();
 
@@ -28,14 +30,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-export type FilterType = 'all' | 'active' | 'completed'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
-
 const Component = () => {
     const {
         todoLists,
@@ -44,6 +38,11 @@ const Component = () => {
         onChangeTLTitle,
         deleteTodoList
     } = useAppWithRedux();
+
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [])
 
     const classes = useStyles();
 
@@ -66,7 +65,7 @@ const Component = () => {
                         <AddItemForm addItem={addTodoList}/>
                     </Grid>
                     <Grid container spacing={10}>
-                        {todoLists.map((tl: TodolistType) => {
+                        {todoLists.map((tl: TodolistDomainType) => {
                             return (
                                 <Grid item>
                                     <Paper style={{padding: "10px"}}>

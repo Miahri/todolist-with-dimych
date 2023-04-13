@@ -1,5 +1,4 @@
-import React, {useCallback} from 'react';
-import {FilterType} from "./App/App";
+import React, {useCallback, useEffect} from 'react';
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
@@ -7,7 +6,9 @@ import { Delete } from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./state/store";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
-import {Task, TaskType} from "./Task";
+import {Task} from "./Task";
+import {fetchTodolistsTC, FilterType} from "./state/todolist-reducer";
+import {TaskStatuses, TaskType} from "./todolists-api";
 
 type TodolistPropsType = {
     id: string
@@ -24,10 +25,10 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
 
     let filteredTasks = tasks;
     if (props.filter === 'active') {
-        filteredTasks = filteredTasks.filter((t: TaskType) => !t.isDone)
+        filteredTasks = filteredTasks.filter((t: TaskType) => t.status === TaskStatuses.New)
     }
     if (props.filter === 'completed') {
-        filteredTasks = filteredTasks.filter((t: TaskType) => t.isDone)
+        filteredTasks = filteredTasks.filter((t: TaskType) => t.status !== TaskStatuses.New)
     }
 
     const removeTask = useCallback((id: string, todoListId: string) => {

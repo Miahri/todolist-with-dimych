@@ -1,23 +1,15 @@
 import React from 'react';
 import '../App.css';
-import {v1} from "uuid";
-import {TaskType, Todolist} from "../Todolist";
+import {Todolist} from "../Todolist";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {
-    AppBar,
-    Container,
-    Grid,
-    IconButton,
-    Paper,
-    Toolbar,
-    Typography
-} from "@mui/material";
-import { makeStyles } from '@mui/styles';
-import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
+import {AppBar, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {makeStyles} from '@mui/styles';
+import {createTheme, Theme, ThemeProvider} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
-import {todoListId1, todoListId2} from "./id-utils";
 import {useTasks} from "./hooks/useTasks";
 import {useTodolists} from "./hooks/useTodolists";
+import {TodolistDomainType} from "../state/todolist-reducer";
+import {TaskStatuses, TaskType} from "../todolists-api";
 
 const theme = createTheme();
 
@@ -30,14 +22,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginRight: theme.spacing(2)
     }
 }));
-
-export type FilterType = 'all' | 'active' | 'completed'
-
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterType
-}
 
 export type AllTasksType = {
     [key: string]: Array<TaskType>
@@ -86,13 +70,13 @@ const Component = () => {
                         <AddItemForm addItem={addTodoList}/>
                     </Grid>
                     <Grid container spacing={10}>
-                        {todoLists.map((tl: TodolistType) => {
+                        {todoLists.map((tl: TodolistDomainType) => {
                             let filteredTasks = tasks[tl.id];
                             if (tl.filter === 'active') {
-                                filteredTasks = filteredTasks.filter((t: TaskType) => !t.isDone)
+                                filteredTasks = filteredTasks.filter((t: TaskType) => t.status === TaskStatuses.New)
                             }
                             if (tl.filter === 'completed') {
-                                filteredTasks = filteredTasks.filter((t: TaskType) => t.isDone)
+                                filteredTasks = filteredTasks.filter((t: TaskType) => t.status !== TaskStatuses.New)
                             }
 
                             return (

@@ -2,12 +2,7 @@ import React, {ChangeEvent} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@mui/icons-material";
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {TaskStatuses, TaskType} from "./todolists-api";
 
 type TaskPropsType = {
     todolistId: string
@@ -28,7 +23,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     return (
         <li key={props.task.id}>
             <Checkbox
-                checked={props.task.isDone}
+                checked={props.task.status !== TaskStatuses.New}
                 onChange={changeStatusListener}
                 color="primary"
             />

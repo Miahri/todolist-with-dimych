@@ -1,15 +1,10 @@
 import React, {ChangeEvent} from 'react';
-import {FilterType} from "./App/App";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import { Delete } from "@mui/icons-material";
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
+import {FilterType} from "./state/todolist-reducer";
+import {TaskStatuses, TaskType} from "./todolists-api";
 
 type TodolistPropsType = {
     id: string
@@ -53,7 +48,7 @@ export const Todolist = (props: TodolistPropsType) => {
                         return (
                             <li key={t.id}>
                                 <Checkbox
-                                    checked={t.isDone}
+                                    checked={t.status !== TaskStatuses.New}
                                     onChange={changeStatus}
                                     color="primary"
                                 />
