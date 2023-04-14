@@ -3,11 +3,10 @@ import {v1} from "uuid";
 import {
     AddTodolistActionType,
     RemoveTodolistActionType,
-    SetTodolistsActionType,
-    todoListId1,
-    todoListId2
+    SetTodolistsActionType
 } from "./todolist-reducer";
-import {TaskPriorities, TaskStatuses} from "../todolists-api";
+import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI} from "../todolists-api";
+import {Dispatch} from "redux";
 
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK'
@@ -31,28 +30,16 @@ export type ChangeTaskTitleActionType = {
     title: string
     todolistId: string
 }
+export type SetTasksActionType = {
+    type: 'SET-TASKS'
+    tasks: Array<TaskType>
+    todolistId: string
+}
 
 type MainType = RemoveTaskActionType | AddTaskActionType | ChangeTaskStatusActionType | ChangeTaskTitleActionType
-    | AddTodolistActionType | RemoveTodolistActionType | SetTodolistsActionType;
+    | AddTodolistActionType | RemoveTodolistActionType | SetTodolistsActionType | SetTasksActionType;
 
-const initialState: AllTasksType = {
-    [todoListId1]: [
-        {id: v1(), title: 'HTML', status: TaskStatuses.Completed, todoListId: todoListId1, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-        {id: v1(), title: 'CSS', status: TaskStatuses.Completed, todoListId: todoListId1, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-        {id: v1(), title: 'React', status: TaskStatuses.New, todoListId: todoListId1, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-        {id: v1(), title: 'Redux', status: TaskStatuses.New, todoListId: todoListId1, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-    ],
-    [todoListId2]: [
-        {id: v1(), title: 'Milk', status: TaskStatuses.Completed, todoListId: todoListId2, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-        {id: v1(), title: 'Book', status: TaskStatuses.New, todoListId: todoListId2, addedDate: '',
-            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
-    ]
-}
+const initialState: AllTasksType = {}
 
 export const tasksReducer = (state: AllTasksType = initialState, action: MainType): AllTasksType => {
     switch (action.type) {
@@ -104,6 +91,12 @@ export const tasksReducer = (state: AllTasksType = initialState, action: MainTyp
             })
             return copyState;
         }
+        case 'SET-TASKS': {
+            return {
+                [action.todolistId]: action.tasks,
+                ...state
+            }
+        }
         default:
             return state
     }
@@ -120,4 +113,16 @@ export const changeTaskStatusAC = (taskId: string, status: boolean, todolistId: 
 }
 export const changeTaskTitleAC = (taskId: string, title: string, todolistId: string): ChangeTaskTitleActionType => {
     return {type: 'CHANGE-TASK-TITLE', taskId, title, todolistId}
+}
+export const setTasksAC = (tasks: Array<TaskType>, todolistId: string): SetTasksActionType => {
+    return {type: 'SET-TASKS', tasks, todolistId}
+}
+
+export const fetchTasksTC = (todolistId: string) => {
+    return (dispatch: Dispatch) => {
+        todolistsAPI.getTasks(todolistId)
+            .then((res) => {
+                dispatch(setTasksAC(res.data.items, todolistId))
+            })
+    }
 }

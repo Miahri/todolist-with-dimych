@@ -3,11 +3,11 @@ import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./state/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {useSelector} from "react-redux";
+import {AppRootState, useAppDispatch} from "./state/store";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksTC, removeTaskAC} from "./state/tasks-reducer";
 import {Task} from "./Task";
-import {fetchTodolistsTC, FilterType} from "./state/todolist-reducer";
+import {FilterType} from "./state/todolist-reducer";
 import {TaskStatuses, TaskType} from "./todolists-api";
 
 type TodolistPropsType = {
@@ -21,7 +21,10 @@ type TodolistPropsType = {
 
 export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id]);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.id))
+    }, [])
 
     let filteredTasks = tasks;
     if (props.filter === 'active') {

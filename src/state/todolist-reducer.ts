@@ -38,10 +38,7 @@ export type TodolistDomainType = TodolistType & {
 export let todoListId1 = v1();
 export let todoListId2 = v1();
 
-const initialState: Array<TodolistDomainType> = [
-    {id: todoListId1, title: 'What to learn', addedDate: '', order: 0, filter: 'all'},
-    {id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all'},
-]
+const initialState: Array<TodolistDomainType> = []
 
 export const todolistReducer = (state: Array<TodolistDomainType> = initialState, action: MainType): Array<TodolistDomainType> => {
     switch (action.type) {
