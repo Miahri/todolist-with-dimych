@@ -25,7 +25,7 @@ export function useTasks() {
     });
 
     const addTask = (title: string, todoListId: string) => {
-        let newTask: TaskType = {id: v1(), title: title, status: TaskStatuses.New, todoListId, addedDate: '',
+        let newTask: TaskType = {id: v1(), title, status: TaskStatuses.New, todoListId, addedDate: '',
             order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''};
         let result = tasks[todoListId];
         tasks[todoListId] = [newTask, ...result];

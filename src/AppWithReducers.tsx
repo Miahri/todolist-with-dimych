@@ -3,15 +3,13 @@ import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Todolist";
 import {AddItemForm} from "./AddItemForm/AddItemForm";
-import {
-    AppBar,
-    Container,
-    Grid,
-    IconButton,
-    Paper,
-    Toolbar,
-    Typography
-} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
@@ -41,7 +39,9 @@ const Component = () => {
     const classes = useStyles();
 
     const addTask = (title: string, todoListId: string) => {
-        const action = addTaskAC(title, todoListId);
+        const action = addTaskAC({id: v1(), title, status: TaskStatuses.New,
+            todoListId, addedDate: '',
+            order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''});
         dispatchToTasksReducer(action);
     }
 

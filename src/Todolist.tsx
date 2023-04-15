@@ -1,7 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@mui/material";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import { Delete } from "@mui/icons-material";
 import {FilterType} from "./state/todolist-reducer";
 import {TaskStatuses, TaskType} from "./todolists-api";

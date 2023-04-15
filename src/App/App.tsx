@@ -2,14 +2,20 @@ import React from 'react';
 import '../App.css';
 import {Todolist} from "../Todolist";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
-import {AppBar, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import {makeStyles} from '@mui/styles';
 import {createTheme, Theme, ThemeProvider} from '@mui/material/styles';
-import {Menu} from "@mui/icons-material";
 import {useTasks} from "./hooks/useTasks";
 import {useTodolists} from "./hooks/useTodolists";
 import {TodolistDomainType} from "../state/todolist-reducer";
 import {TaskStatuses, TaskType} from "../todolists-api";
+import {Menu} from "@mui/icons-material";
 
 const theme = createTheme();
 

@@ -1,6 +1,7 @@
 import React from "react";
-import {Button, TextField} from "@mui/material";
 import {useAddItemForm} from "./hooks/useAddItemForm";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 type AddItemFormProps = {
     addItem: (title: string) => void

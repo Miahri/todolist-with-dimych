@@ -9,6 +9,7 @@ import {
 } from "./tasks-reducer";
 import {addTodolistAC, removeTodolistAC} from "./todolist-reducer";
 import {TaskPriorities, TaskStatuses} from "../todolists-api";
+import {v1} from "uuid";
 
 test('correct task should be deleted from correct array', () => {
     const startState: AllTasksType = {
@@ -60,7 +61,9 @@ test('correct task should be added to correct array', () => {
         ],
     }
 
-    const action = addTaskAC("juice", "todolist2");
+    const action = addTaskAC({id: v1(), title: 'juice', status: TaskStatuses.New,
+        todoListId: "todolist2", addedDate: '',
+        order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''});
 
     const endState = tasksReducer(startState, action);
 

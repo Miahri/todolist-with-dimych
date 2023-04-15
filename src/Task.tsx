@@ -1,5 +1,6 @@
 import React, {ChangeEvent} from "react";
-import {Checkbox, IconButton} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@mui/icons-material";
 import {TaskStatuses, TaskType} from "./todolists-api";

@@ -1,11 +1,18 @@
 import React, {useCallback, useEffect} from 'react';
 import {AddItemForm} from "./AddItemForm/AddItemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, IconButton} from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import { Delete } from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "./state/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, fetchTasksTC, removeTaskAC} from "./state/tasks-reducer";
+import {
+    addTaskTC,
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    fetchTasksTC,
+    removeTaskTC
+} from "./state/tasks-reducer";
 import {Task} from "./Task";
 import {FilterType} from "./state/todolist-reducer";
 import {TaskStatuses, TaskType} from "./todolists-api";
@@ -35,8 +42,7 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     }
 
     const removeTask = useCallback((id: string, todoListId: string) => {
-        const action = removeTaskAC(id, todoListId);
-        dispatch(action);
+        dispatch(removeTaskTC(id, todoListId));
     }, [dispatch])
 
     const changeStatus = useCallback((id: string, status: boolean, todoListId: string) => {
@@ -48,6 +54,10 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
         dispatch(changeTaskTitleAC(id, title, todoListId));
     }, [dispatch])
 
+    const addTask = useCallback((title: string) => {
+        dispatch(addTaskTC(title, props.id))
+    }, [dispatch]);
+
     const changeFilter = useCallback((filter: FilterType) => {
         props.changeFilter(filter, props.id);
     }, [props.changeFilter, props.id])
@@ -55,10 +65,7 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     const deleteTodoList = useCallback(() => {
         props.deleteTodoList(props.id)
     }, [props.deleteTodoList, props.id]);
-    const addTask = useCallback((title: string) => {
-        const action = addTaskAC(title, props.id);
-        dispatch(action);
-    }, [dispatch]);
+
     const onChangeTLTitle = useCallback((title: string) => {
         props.onChangeTLTitle(title, props.id)
     }, [props.onChangeTLTitle, props.id])
