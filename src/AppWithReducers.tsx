@@ -46,7 +46,7 @@ const Component = () => {
     }
 
     const addTodoList = (title: string) => {
-        const action = addTodolistAC(title);
+        const action = addTodolistAC({id: v1(), title, addedDate: '', order: 0});
         dispatchToTasksReducer(action);
         dispatchToTodolistsReducer(action);
     }
