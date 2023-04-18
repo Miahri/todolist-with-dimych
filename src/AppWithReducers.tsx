@@ -60,7 +60,7 @@ const Component = () => {
         dispatchToTodolistsReducer(changeFilterAC(todoListId, filter));
     }
 
-    const changeStatus = (id: string, status: boolean, todoListId: string) => {
+    const changeStatus = (id: string, status: TaskStatuses, todoListId: string) => {
         const action = changeTaskStatusAC(id, status, todoListId);
         dispatchToTasksReducer(action);
     }

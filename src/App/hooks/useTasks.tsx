@@ -37,9 +37,9 @@ export function useTasks() {
         setTasks({...tasks})
     }
 
-    const changeStatus = (id: string, status: boolean, todoListId: string) => {
+    const changeStatus = (id: string, status: TaskStatuses, todoListId: string) => {
         tasks[todoListId] = tasks[todoListId].map((t:TaskType) => t.id === id ? {...t,
-            status: status ? TaskStatuses.Completed : TaskStatuses.New} : t);
+            status: status} : t);
         setTasks({...tasks});
     }
 

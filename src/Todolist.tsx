@@ -15,7 +15,7 @@ type TodolistPropsType = {
     removeTask: (id: string, todoListId: string) => void
     changeFilter: (filter: FilterType, todoListId: string) => void
     addTask: (title: string, todoListId: string) => void
-    changeStatus: (id: string, status: boolean, todoListId: string) => void
+    changeStatus: (id: string, status: TaskStatuses, todoListId: string) => void
     onChangeTaskTitle: (id: string, title: string, todoListId: string) => void
     onChangeTLTitle: (title: string, todoListId: string) => void
     deleteTodoList: (todoListId: string) => void
@@ -41,7 +41,8 @@ export const Todolist = (props: TodolistPropsType) => {
                     {props.tasks.map((t: TaskType) => {
                         const removeTask = () => props.removeTask(t.id, props.id);
                         const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                            props.changeStatus(t.id, e.currentTarget.checked, props.id)
+                            let status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
+                            props.changeStatus(t.id, status, props.id)
                         }
                         const onChangeTaskTitle = (title: string) => {
                             props.onChangeTaskTitle(t.id, title, props.id)
