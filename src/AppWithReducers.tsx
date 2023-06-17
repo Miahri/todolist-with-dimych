@@ -20,7 +20,7 @@ import {
     removeTodolistAC, TodolistDomainType,
     todolistReducer
 } from "./state/todolist-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from "./todolists-api";
 
 const theme = createTheme();
@@ -61,12 +61,12 @@ const Component = () => {
     }
 
     const changeStatus = (id: string, status: TaskStatuses, todoListId: string) => {
-        const action = changeTaskStatusAC(id, status, todoListId);
+        const action = updateTaskAC(id, {status}, todoListId);
         dispatchToTasksReducer(action);
     }
 
     const onChangeTaskTitle = (id: string, title: string, todoListId: string) => {
-        dispatchToTasksReducer(changeTaskTitleAC(id, title, todoListId));
+        dispatchToTasksReducer(updateTaskAC(id, {title}, todoListId));
     }
 
     const onChangeTLTitle = (title: string, todoListId: string) => {

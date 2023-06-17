@@ -8,10 +8,8 @@ import {useSelector} from "react-redux";
 import {AppRootState, useAppDispatch} from "./state/store";
 import {
     addTaskTC,
-    changeTaskStatusTC,
-    changeTaskTitleAC,
     fetchTasksTC,
-    removeTaskTC
+    removeTaskTC, updateTaskTC
 } from "./state/tasks-reducer";
 import {Task} from "./Task";
 import {FilterType} from "./state/todolist-reducer";
@@ -46,11 +44,11 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     }, [dispatch])
 
     const changeStatus = useCallback((id: string, status: TaskStatuses, todoListId: string) => {
-        dispatch(changeTaskStatusTC(id, status, todoListId));
+        dispatch(updateTaskTC(id, {status}, todoListId));
     }, [dispatch])
 
     const onChangeTaskTitle = useCallback((id: string, title: string, todoListId: string) => {
-        dispatch(changeTaskTitleAC(id, title, todoListId));
+        dispatch(updateTaskTC(id, {title}, todoListId));
     }, [dispatch])
 
     const addTask = useCallback((title: string) => {
