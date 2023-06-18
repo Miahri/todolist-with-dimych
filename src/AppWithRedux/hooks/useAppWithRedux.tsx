@@ -4,7 +4,7 @@ import {AppRootState, useAppDispatch} from "../../state/store";
 import {
     addTodolistTC,
     changeFilterAC,
-    changeTodolistTitleAC, deleteTodolistTC,
+    changeTodolistTitleAC, changeTodolistTitleTC, deleteTodolistTC,
     FilterType,
     TodolistDomainType
 } from "../../state/todolist-reducer";
@@ -22,8 +22,7 @@ export function useAppWithRedux() {
     }, [dispatch])
 
     const onChangeTLTitle = useCallback((title: string, todoListId: string) => {
-        const action = changeTodolistTitleAC(todoListId, title);
-        dispatch(action);
+        dispatch(changeTodolistTitleTC(todoListId, title));
     }, [dispatch])
 
     const deleteTodoList = useCallback((todoListId: string) => {
