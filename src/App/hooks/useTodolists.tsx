@@ -25,13 +25,7 @@ export function useTodolists(onTodolistRemoved: (todolistID: string) => void,
     }
 
     const addTodoList = (title: string) => {
-        let newTList: TodolistDomainType = {
-            id: v1(),
-            title: title,
-            addedDate: '',
-            order: 0,
-            filter: 'all'
-        };
+        let newTList: TodolistDomainType = {id: v1(), title: title, addedDate: '', order: 0, filter: 'all'};
         setTodolist([newTList, ...todoLists]);
         onTodolistAdded(newTList.id);
     }

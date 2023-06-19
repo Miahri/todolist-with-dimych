@@ -31,7 +31,3 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         </div>
     )
 })
-
-/*
-<input value={inputValue}
-       className={error ? 'error' : ''}/>*/

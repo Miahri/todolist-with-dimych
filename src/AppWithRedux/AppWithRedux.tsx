@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import '../App.css';
-import {TodolistWithRedux} from "../TodolistWithRedux";
+import {TodolistWithRedux} from "../Todolists/TodolistWithRedux";
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
@@ -38,6 +38,7 @@ const Component = () => {
     } = useAppWithRedux();
 
     const dispatch = useAppDispatch();
+
     useEffect(() => {
         dispatch(fetchTodolistsTC())
     }, [])

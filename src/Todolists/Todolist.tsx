@@ -1,12 +1,12 @@
 import React, {ChangeEvent} from 'react';
-import {AddItemForm} from "./AddItemForm/AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import { Delete } from "@mui/icons-material";
-import {FilterType} from "./state/todolist-reducer";
-import {TaskStatuses, TaskType} from "./todolists-api";
+import {FilterType} from "../state/todolist-reducer";
+import {TaskStatuses, TaskType} from "../todolists-api";
 
 type TodolistPropsType = {
     id: string

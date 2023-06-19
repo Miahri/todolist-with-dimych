@@ -4,7 +4,7 @@ import {AppRootState, useAppDispatch} from "../../state/store";
 import {
     addTodolistTC,
     changeFilterAC,
-    changeTodolistTitleAC, changeTodolistTitleTC, deleteTodolistTC,
+    changeTodolistTitleTC, deleteTodolistTC,
     FilterType,
     TodolistDomainType
 } from "../../state/todolist-reducer";
