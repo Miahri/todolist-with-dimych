@@ -46,7 +46,7 @@ function App() {
     const addTask = (title: string, todoListId: string) => {
         let newTask: TaskType = {id: v1(), title: title, isDone: false};
         let result = tasks[todoListId];
-        tasks[todoListId] = [...result, newTask];
+        tasks[todoListId] = [newTask, ...result];
         setTasks({...tasks});
     }
 
@@ -56,8 +56,8 @@ function App() {
             title: title,
             filter: 'all'
         };
-        setTodolist([...todoLists, newTList]);
-        setTasks({...tasks, [newTList.id]: []});
+        setTodolist([newTList, ...todoLists]);
+        setTasks({[newTList.id]: [], ...tasks});
     }
 
     const removeTask = (id: string, todoListId: string) => {
