@@ -33,6 +33,10 @@ const initialGlobalState = {
             {id: v1(), title: 'Book', status: TaskStatuses.New, todoListId: "todoListId2", addedDate: '',
                 order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''},
         ]
+    },
+    app: {
+        status: 'idle',
+        error: null
     }
 }
 

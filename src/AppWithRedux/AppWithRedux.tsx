@@ -15,6 +15,8 @@ import {Menu} from "@mui/icons-material";
 import {useAppWithRedux} from "./hooks/useAppWithRedux";
 import {fetchTodolistsTC, TodolistDomainType} from "../state/todolist-reducer";
 import {useAppDispatch} from "../state/store";
+import LinearProgress from "@mui/material/LinearProgress";
+import {ErrorSnackbar} from "../ErrorSnackBar/ErrorSnackBar";
 
 const theme = createTheme();
 
@@ -57,9 +59,11 @@ const Component = () => {
                             Photos
                         </Typography>
                     </Toolbar>
+                    <LinearProgress color='secondary'/>
                 </AppBar>
 
                 <Container fixed>
+                    <ErrorSnackbar />
                     <Grid container style={{padding: "20px"}}>
                         <AddItemForm addItem={addTodoList}/>
                     </Grid>
