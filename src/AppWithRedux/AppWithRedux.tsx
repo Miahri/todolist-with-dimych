@@ -14,9 +14,11 @@ import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
 import {useAppWithRedux} from "./hooks/useAppWithRedux";
 import {fetchTodolistsTC, TodolistDomainType} from "../state/todolist-reducer";
-import {useAppDispatch} from "../state/store";
+import {AppRootState, useAppDispatch} from "../state/store";
 import LinearProgress from "@mui/material/LinearProgress";
 import {ErrorSnackbar} from "../ErrorSnackBar/ErrorSnackBar";
+import {useSelector} from "react-redux";
+import {RequestStatusType} from "./app-reducer";
 
 const theme = createTheme();
 
@@ -39,6 +41,7 @@ const Component = () => {
         deleteTodoList
     } = useAppWithRedux();
 
+    const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -59,11 +62,10 @@ const Component = () => {
                             Photos
                         </Typography>
                     </Toolbar>
-                    <LinearProgress color='secondary'/>
+                    {status === 'loading' && <LinearProgress color='secondary'/>}
                 </AppBar>
 
                 <Container fixed>
-                    <ErrorSnackbar />
                     <Grid container style={{padding: "20px"}}>
                         <AddItemForm addItem={addTodoList}/>
                     </Grid>
@@ -85,6 +87,7 @@ const Component = () => {
                         })}
                     </Grid>
                 </Container>
+                <ErrorSnackbar />
             </div>
         </div>
     );
