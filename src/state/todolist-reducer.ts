@@ -2,6 +2,7 @@ import {v1} from "uuid";
 import {todoListId1, todoListId2} from '../App/id-utils'
 import {todolistsAPI, TodolistType} from "../todolists-api";
 import {Dispatch} from "redux";
+import {setStatusAC} from "../AppWithRedux/app-reducer";
 
 //types
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -60,27 +61,33 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
 //thunk
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'));
         todolistsAPI.getTodolist()
             .then((res) => {
-                dispatch(setTodolistsAC(res.data))
+                dispatch(setTodolistsAC(res.data));
+                dispatch(setStatusAC('succeeded'));
             })
     }
 }
 
 export const deleteTodolistTC = (todoListId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'));
         todolistsAPI.deleteTodolist(todoListId)
             .then((res) => {
-                dispatch(removeTodolistAC(todoListId))
+                dispatch(removeTodolistAC(todoListId));
+                dispatch(setStatusAC('succeeded'));
             })
     }
 }
 
 export const addTodolistTC = (title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setStatusAC('loading'));
         todolistsAPI.createTodolist(title)
             .then((res) => {
-                dispatch(addTodolistAC(res.data.data.item))
+                dispatch(addTodolistAC(res.data.data.item));
+                dispatch(setStatusAC('succeeded'));
             })
     }
 }
