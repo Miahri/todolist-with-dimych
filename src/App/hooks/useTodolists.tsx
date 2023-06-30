@@ -6,8 +6,8 @@ import {FilterType, TodolistDomainType} from "../../state/todolist-reducer";
 export function useTodolists(onTodolistRemoved: (todolistID: string) => void,
                              onTodolistAdded: (todolistID: string) => void) {
     let [todoLists, setTodolist] = useState<Array<TodolistDomainType>>([
-        {id: todoListId1, title: 'What to learn', addedDate: '', order: 0, filter: 'all'},
-        {id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all'},
+        {id: todoListId1, title: 'What to learn', addedDate: '', order: 0, filter: 'all', entityStatus: 'idle'},
+        {id: todoListId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all', entityStatus: 'idle'},
     ]);
 
     const changeFilter = (filter: FilterType, todoListId: string) => {
@@ -25,7 +25,7 @@ export function useTodolists(onTodolistRemoved: (todolistID: string) => void,
     }
 
     const addTodoList = (title: string) => {
-        let newTList: TodolistDomainType = {id: v1(), title: title, addedDate: '', order: 0, filter: 'all'};
+        let newTList: TodolistDomainType = {id: v1(), title: title, addedDate: '', order: 0, filter: 'all', entityStatus: 'idle'};
         setTodolist([newTList, ...todoLists]);
         onTodolistAdded(newTList.id);
     }
