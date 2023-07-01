@@ -22,12 +22,17 @@ type TodolistPropsType = {
     onChangeTLTitle: (title: string, todoListId: string) => void
     deleteTodoList: (todoListId: string) => void
     filter: FilterType
+    demo?: boolean
 }
 
-export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
+export const TodolistWithRedux: React.FC<TodolistPropsType> = React.memo(({demo = false, ...props}) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[props.id]);
     const dispatch = useAppDispatch();
+
     useEffect(() => {
+        if(demo){
+            return;
+        }
         dispatch(fetchTasksTC(props.id))
     }, [])
 

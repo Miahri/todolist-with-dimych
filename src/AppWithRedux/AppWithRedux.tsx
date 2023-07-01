@@ -9,8 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { makeStyles } from '@mui/styles';
-import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
+import {makeStyles} from '@mui/styles';
+import {createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
 import {useAppWithRedux} from "./hooks/useAppWithRedux";
 import {fetchTodolistsTC, TodolistDomainType} from "../state/todolist-reducer";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-const Component = () => {
+const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
     const {
         todoLists,
         addTodoList,
@@ -56,7 +56,7 @@ const Component = () => {
                 <AppBar position="static">
                     <Toolbar variant="dense">
                         <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                            <Menu />
+                            <Menu/>
                         </IconButton>
                         <Typography variant="h6" color="inherit">
                             Photos
@@ -80,19 +80,25 @@ const Component = () => {
                                                            changeFilter={changeFilter}
                                                            onChangeTLTitle={onChangeTLTitle}
                                                            deleteTodoList={deleteTodoList}
-                                                           filter={tl.filter}/>
+                                                           filter={tl.filter}
+                                                           demo={demo}/>
                                     </Paper>
                                 </Grid>
                             )
                         })}
                     </Grid>
                 </Container>
-                <ErrorSnackbar />
+                <ErrorSnackbar/>
             </div>
         </div>
     );
 }
 
-export function AppWithRedux() {
-    return <ThemeProvider theme={theme}><Component /></ThemeProvider>
+export const AppWithRedux: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
+    return <ThemeProvider theme={theme}><Component demo={demo}/></ThemeProvider>
 }
+
+type AppWithReduxPropsType = {
+    demo?: boolean
+}
+
