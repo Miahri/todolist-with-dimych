@@ -5,9 +5,10 @@ import TextField from "@mui/material/TextField";
 
 type AddItemFormProps = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = React.memo((props: AddItemFormProps) => {
+export const AddItemForm: React.FC<AddItemFormProps> = React.memo(({disabled = false, ...props}) => {
     const {
         inputValue,
         error,
@@ -20,6 +21,7 @@ export const AddItemForm = React.memo((props: AddItemFormProps) => {
         <div>
             <TextField
                 id="outlined-error-helper-text"
+                disabled={disabled}
                 error={!!error}
                 value={inputValue}
                 onChange={inputValueChange}

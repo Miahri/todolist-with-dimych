@@ -75,10 +75,11 @@ export const TodolistWithRedux: React.FC<TodolistPropsType> = React.memo(({demo 
     return (
         <div>
             <h3><EditableSpan title={props.title} onChange={onChangeTLTitle}/></h3>
-            <IconButton onClick={deleteTodoList}>
+            <IconButton onClick={deleteTodoList}
+                        disabled={true}>
                 <Delete />
             </IconButton>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTask} disabled={true}/>
             <div>
                 <ul>
                     {filteredTasks.map((t: TaskType) => {
