@@ -75,12 +75,10 @@ const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
                                 <Grid item>
                                     <Paper style={{padding: "10px"}}>
                                         <TodolistWithRedux key={tl.id}
-                                                           id={tl.id}
-                                                           title={tl.title}
+                                                           todolist={tl}
                                                            changeFilter={changeFilter}
                                                            onChangeTLTitle={onChangeTLTitle}
                                                            deleteTodoList={deleteTodoList}
-                                                           filter={tl.filter}
                                                            demo={demo}/>
                                     </Paper>
                                 </Grid>

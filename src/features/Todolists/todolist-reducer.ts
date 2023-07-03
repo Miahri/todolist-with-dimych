@@ -6,6 +6,7 @@ import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 export type ChangeFilterActionType = ReturnType<typeof changeFilterAC>
+export type ChangeEntityStatusActionType = ReturnType<typeof changeEntityStatusAC>
 export type ChangeTodolistTitleActionType = ReturnType<typeof changeTodolistTitleAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 export type FilterType = 'all' | 'active' | 'completed'
@@ -14,7 +15,7 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: RequestStatusType
 }
 type MainType = RemoveTodolistActionType | AddTodolistActionType | ChangeFilterActionType |
-                ChangeTodolistTitleActionType | SetTodolistsActionType;
+                ChangeTodolistTitleActionType | SetTodolistsActionType | ChangeEntityStatusActionType;
 
 //reducer
 const initialState: Array<TodolistDomainType> = []
@@ -32,6 +33,8 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
             return [newTList, ...state]
         case 'CHANGE-FILTER':
             return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, filter: action.filter} : tl);
+        case 'CHANGE-ENTITY-STATUS':
+            return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl);
         case 'CHANGE-TODOLIST-TITLE':
             return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, title: action.title} : tl);
         case 'SET-TODOLISTS':
@@ -50,6 +53,9 @@ export const addTodolistAC = (todolist: TodolistType) => {
 }
 export const changeFilterAC = (id: string, filter: FilterType) => {
     return {type: 'CHANGE-FILTER', id: id, filter: filter} as const
+}
+export const changeEntityStatusAC = (id: string, entityStatus: RequestStatusType) => {
+    return {type: 'CHANGE-ENTITY-STATUS', id: id, entityStatus: entityStatus} as const
 }
 export const changeTodolistTitleAC = (id: string, title: string) => {
     return {type: 'CHANGE-TODOLIST-TITLE', id: id, title: title} as const
@@ -73,6 +79,7 @@ export const fetchTodolistsTC = () => {
 export const deleteTodolistTC = (todoListId: string) => {
     return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'));
+        dispatch(changeEntityStatusAC(todoListId, 'loading'))
         todolistsAPI.deleteTodolist(todoListId)
             .then((res) => {
                 dispatch(removeTodolistAC(todoListId));
