@@ -1,6 +1,8 @@
 import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {removeTaskAC} from "./tasks-reducer";
 
 //types
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -15,7 +17,7 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: RequestStatusType
 }
 type MainType = RemoveTodolistActionType | AddTodolistActionType | ChangeFilterActionType |
-                ChangeTodolistTitleActionType | SetTodolistsActionType | ChangeEntityStatusActionType;
+    ChangeTodolistTitleActionType | SetTodolistsActionType | ChangeEntityStatusActionType;
 
 //reducer
 const initialState: Array<TodolistDomainType> = []
@@ -32,13 +34,16 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
             };
             return [newTList, ...state]
         case 'CHANGE-FILTER':
-            return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, filter: action.filter} : tl);
+            return state.map((tl: TodolistDomainType) => tl.id === action.id ? {...tl, filter: action.filter} : tl);
         case 'CHANGE-ENTITY-STATUS':
-            return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl);
+            return state.map((tl: TodolistDomainType) => tl.id === action.id ? {
+                ...tl,
+                entityStatus: action.entityStatus
+            } : tl);
         case 'CHANGE-TODOLIST-TITLE':
-            return state.map((tl:TodolistDomainType) => tl.id === action.id ? {...tl, title: action.title} : tl);
+            return state.map((tl: TodolistDomainType) => tl.id === action.id ? {...tl, title: action.title} : tl);
         case 'SET-TODOLISTS':
-            return action.todolists.map((tl:TodolistType) => ({...tl, filter: 'all', entityStatus: 'idle'}));
+            return action.todolists.map((tl: TodolistType) => ({...tl, filter: 'all', entityStatus: 'idle'}));
         default:
             return state
     }
@@ -82,8 +87,15 @@ export const deleteTodolistTC = (todoListId: string) => {
         dispatch(changeEntityStatusAC(todoListId, 'loading'))
         todolistsAPI.deleteTodolist(todoListId)
             .then((res) => {
-                dispatch(removeTodolistAC(todoListId));
-                dispatch(setStatusAC('succeeded'));
+                if (res.data.resultCode === 0) {
+                    dispatch(removeTodolistAC(todoListId));
+                    dispatch(setStatusAC('succeeded'));
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch(error => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -93,8 +105,15 @@ export const addTodolistTC = (title: string) => {
         dispatch(setStatusAC('loading'));
         todolistsAPI.createTodolist(title)
             .then((res) => {
-                dispatch(addTodolistAC(res.data.data.item));
-                dispatch(setStatusAC('succeeded'));
+                if (res.data.resultCode === 0) {
+                    dispatch(addTodolistAC(res.data.data.item));
+                    dispatch(setStatusAC('succeeded'));
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch(error => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
@@ -103,7 +122,15 @@ export const changeTodolistTitleTC = (id: string, title: string) => {
     return (dispatch: Dispatch) => {
         todolistsAPI.updateTodolistTitle(id, title)
             .then((res) => {
-                dispatch(changeTodolistTitleAC(id, title))
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTodolistTitleAC(id, title))
+                    dispatch(setStatusAC('succeeded'));
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch(error => {
+                handleServerNetworkError(error, dispatch)
             })
     }
 }
