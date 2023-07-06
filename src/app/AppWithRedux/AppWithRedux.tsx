@@ -1,26 +1,18 @@
 import React from 'react';
 import '../App.css';
-import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import {makeStyles} from '@mui/styles';
 import {createTheme, ThemeProvider, Theme} from '@mui/material/styles';
-import {Menu} from "@mui/icons-material";
-import {AppRootState} from "../store";
-import LinearProgress from "@mui/material/LinearProgress";
 import {ErrorSnackbar} from "../../components/ErrorSnackBar/ErrorSnackBar";
-import {useSelector} from "react-redux";
-import {RequestStatusType} from "../app-reducer";
 import TodolistList from "../../features/Todolists/TodolistList";
+import ButtonAppBar from "../../components/ButtonAppBar/ButtonAppBar";
+import {Login} from "../../features/Login/Login";
 
 const theme = createTheme();
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         flexGrow: 1,
-
     },
     menuButton: {
         marginRight: theme.spacing(2)
@@ -29,29 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
 
-    const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
-
     const classes = useStyles();
 
     return (
         <div>
             <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar variant="dense">
-                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                            <Menu/>
-                        </IconButton>
-                        <Typography variant="h6" color="inherit">
-                            Photos
-                        </Typography>
-                    </Toolbar>
-                    {status === 'loading' && <LinearProgress color='secondary'/>}
-                </AppBar>
-
+                <ErrorSnackbar/>
+                <ButtonAppBar style={classes.menuButton}/>
                 <Container fixed>
                     <TodolistList demo={demo}/>
+                    <Login />
                 </Container>
-                <ErrorSnackbar/>
             </div>
         </div>
     );
