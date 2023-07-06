@@ -1,24 +1,19 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import '../App.css';
-import {TodolistWithRedux} from "../../features/Todolists/Todolist/TodolistWithRedux";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import {makeStyles} from '@mui/styles';
 import {createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
-import {useAppWithRedux} from "./hooks/useAppWithRedux";
-import {fetchTodolistsTC, TodolistDomainType} from "../../features/Todolists/todolist-reducer";
-import {AppRootState, useAppDispatch} from "../store";
+import {AppRootState} from "../store";
 import LinearProgress from "@mui/material/LinearProgress";
 import {ErrorSnackbar} from "../../components/ErrorSnackBar/ErrorSnackBar";
 import {useSelector} from "react-redux";
 import {RequestStatusType} from "../app-reducer";
+import TodolistList from "../../features/Todolists/TodolistList";
 
 const theme = createTheme();
 
@@ -33,20 +28,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
-    const {
-        todoLists,
-        addTodoList,
-        changeFilter,
-        onChangeTLTitle,
-        deleteTodoList
-    } = useAppWithRedux();
 
     const status = useSelector<AppRootState, RequestStatusType>(state => state.app.status)
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(fetchTodolistsTC())
-    }, [])
 
     const classes = useStyles();
 
@@ -66,25 +49,7 @@ const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
                 </AppBar>
 
                 <Container fixed>
-                    <Grid container style={{padding: "20px"}}>
-                        <AddItemForm addItem={addTodoList}/>
-                    </Grid>
-                    <Grid container spacing={10}>
-                        {todoLists.map((tl: TodolistDomainType) => {
-                            return (
-                                <Grid item>
-                                    <Paper style={{padding: "10px"}}>
-                                        <TodolistWithRedux key={tl.id}
-                                                           todolist={tl}
-                                                           changeFilter={changeFilter}
-                                                           onChangeTLTitle={onChangeTLTitle}
-                                                           deleteTodoList={deleteTodoList}
-                                                           demo={demo}/>
-                                    </Paper>
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
+                    <TodolistList demo={demo}/>
                 </Container>
                 <ErrorSnackbar/>
             </div>
