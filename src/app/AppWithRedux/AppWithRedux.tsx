@@ -7,6 +7,7 @@ import {ErrorSnackbar} from "../../components/ErrorSnackBar/ErrorSnackBar";
 import TodolistList from "../../features/Todolists/TodolistList";
 import ButtonAppBar from "../../components/ButtonAppBar/ButtonAppBar";
 import {Login} from "../../features/Login/Login";
+import {Navigate, Route, Routes} from "react-router-dom";
 
 const theme = createTheme();
 
@@ -29,8 +30,12 @@ const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
                 <ErrorSnackbar/>
                 <ButtonAppBar style={classes.menuButton}/>
                 <Container fixed>
-                    <TodolistList demo={demo}/>
-                    <Login />
+                    <Routes>
+                        <Route path={'/'} element={<TodolistList demo={demo}/>}/>
+                        <Route path={'/login'} element={<Login/>}/>
+                        <Route path='/404' element={<h1>404: PAGE NOT FOUND</h1>}/>
+                        <Route path='*' element={<Navigate to={'/404'}/>}/>
+                    </Routes>
                 </Container>
             </div>
         </div>
