@@ -41,8 +41,8 @@ export const tasksReducer = (state: AllTasksType = initialState, action: MainTyp
         }
         case 'ADD-TASK': {
             return {
-                [action.task.todoListId]: [action.task, ...state[action.task.todoListId]],
-                ...state
+                ...state,
+                [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]
             };
         }
         case 'UPDATE-TASK': {
@@ -58,8 +58,8 @@ export const tasksReducer = (state: AllTasksType = initialState, action: MainTyp
         }
         case 'ADD-TODOLIST': {
             return {
-                [action.todolist.id]: [],
-                ...state
+                ...state,
+                [action.todolist.id]: []
             }
         }
         case 'SET-TODOLISTS': {
@@ -72,8 +72,8 @@ export const tasksReducer = (state: AllTasksType = initialState, action: MainTyp
         }
         case 'SET-TASKS': {
             return {
-                [action.todolistId]: action.tasks,
-                ...state
+                ...state,
+                [action.todolistId]: action.tasks
             }
         }
         case "CLEAR-DATA":
@@ -103,6 +103,7 @@ export const fetchTasksTC = (todolistId: string) => {
         dispatch(setStatusAC('loading'));
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
+                debugger;
                 dispatch(setTasksAC(res.data.items, todolistId))
                 dispatch(setStatusAC('succeeded'));
             })
@@ -133,6 +134,7 @@ export const addTaskTC = (title: string, todolistId: string) => {
         dispatch(setStatusAC('loading'));
         todolistsAPI.createTask(title, todolistId)
             .then((res) => {
+                debugger;
                 if (res.data.resultCode === 0) {
                     dispatch(addTaskAC(res.data.data.item));
                     dispatch(setStatusAC('succeeded'));

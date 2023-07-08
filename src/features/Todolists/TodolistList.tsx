@@ -21,14 +21,15 @@ export const TodolistList = ({demo = false}) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (isLoggedIn){
-            dispatch(fetchTodolistsTC());
+        if (!isLoggedIn){
+            return;
         }
+        dispatch(fetchTodolistsTC());
     }, []);
 
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
-    };
+    }
 
     return (
         <>

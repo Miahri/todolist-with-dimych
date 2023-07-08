@@ -2,7 +2,6 @@ import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {fetchTasksTC} from "./tasks-reducer";
 
 //types
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -76,19 +75,15 @@ export const clearTodoListsDataAC = () => ({type: 'CLEAR-DATA'} as const)
 
 //thunk
 export const fetchTodolistsTC = () => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch) => {
         dispatch(setStatusAC('loading'));
         todolistsAPI.getTodolist()
             .then((res) => {
+                debugger;
                 dispatch(setTodolistsAC(res.data));
                 dispatch(setStatusAC('succeeded'));
-                return res.data;
             })
-            .then((todolists) => {
-                todolists.forEach((el) => {
-                    dispatch(fetchTasksTC(el.id))
-                })
-            })
+
     }
 }
 
