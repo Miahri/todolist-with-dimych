@@ -10,7 +10,20 @@ const settings = {
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings
-})
+});
+
+export type loginDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+type postLoginDataResponseType = {
+    resultCode: number
+    messages: Array<string>,
+    data: {
+        userId: number
+    }
+}
 
 export enum TaskStatuses {
     New = 0,
@@ -66,6 +79,18 @@ export type UpdateTaskType = {
     priority: TaskPriorities
     startDate: string
     deadline: string
+}
+
+export const authAPI = {
+    login(data: loginDataType) {
+        return instance.post(`auth/login`, data)
+    },
+    me() {
+        return instance.get(`auth/me`)
+    },
+    logout() {
+        return instance.delete(`auth/login`)
+    }
 }
 
 export const todolistsAPI = {
