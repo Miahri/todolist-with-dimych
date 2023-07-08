@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../App.css';
 import Container from "@mui/material/Container";
 import {makeStyles} from '@mui/styles';
@@ -8,6 +8,10 @@ import TodolistList from "../../features/Todolists/TodolistList";
 import ButtonAppBar from "../../components/ButtonAppBar/ButtonAppBar";
 import {Login} from "../../features/Login/Login";
 import {Navigate, Route, Routes} from "react-router-dom";
+import {AppRootState, useAppDispatch} from "../store";
+import {useSelector} from "react-redux";
+import {initializeAppTC} from "../../features/Login/auth-reducer";
+import {CircularProgress} from "@mui/material";
 
 const theme = createTheme();
 
@@ -21,6 +25,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const Component: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
+
+    const isInitialized = useSelector<AppRootState, boolean>(state => state.auth.isInitialized);
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(initializeAppTC())
+    },[])
+
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
 
     const classes = useStyles();
 

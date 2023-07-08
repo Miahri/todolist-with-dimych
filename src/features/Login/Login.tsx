@@ -11,10 +11,11 @@ import {useFormik} from "formik";
 import {AppRootState, useAppDispatch} from "../../app/store";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
+import {loginTC} from "./auth-reducer";
 
 export const Login = () => {
 
-    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useAppDispatch()
 
     type FormikErrorType = {

@@ -2,7 +2,7 @@ import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
 import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {removeTaskAC} from "./tasks-reducer";
+import {fetchTasksTC} from "./tasks-reducer";
 
 //types
 export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
@@ -17,7 +17,7 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: RequestStatusType
 }
 type MainType = RemoveTodolistActionType | AddTodolistActionType | ChangeFilterActionType |
-    ChangeTodolistTitleActionType | SetTodolistsActionType | ChangeEntityStatusActionType;
+    ChangeTodolistTitleActionType | SetTodolistsActionType | ChangeEntityStatusActionType | clearTodoListsDataType;
 
 //reducer
 const initialState: Array<TodolistDomainType> = []
@@ -44,6 +44,8 @@ export const todolistReducer = (state: Array<TodolistDomainType> = initialState,
             return state.map((tl: TodolistDomainType) => tl.id === action.id ? {...tl, title: action.title} : tl);
         case 'SET-TODOLISTS':
             return action.todolists.map((tl: TodolistType) => ({...tl, filter: 'all', entityStatus: 'idle'}));
+        case "CLEAR-DATA":
+            return [];
         default:
             return state
     }
@@ -69,14 +71,23 @@ export const setTodolistsAC = (todolists: Array<TodolistType>) => {
     return {type: 'SET-TODOLISTS', todolists} as const
 }
 
+export type clearTodoListsDataType = ReturnType<typeof clearTodoListsDataAC>
+export const clearTodoListsDataAC = () => ({type: 'CLEAR-DATA'} as const)
+
 //thunk
 export const fetchTodolistsTC = () => {
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch<any>) => {
         dispatch(setStatusAC('loading'));
         todolistsAPI.getTodolist()
             .then((res) => {
                 dispatch(setTodolistsAC(res.data));
                 dispatch(setStatusAC('succeeded'));
+                return res.data;
+            })
+            .then((todolists) => {
+                todolists.forEach((el) => {
+                    dispatch(fetchTasksTC(el.id))
+                })
             })
     }
 }

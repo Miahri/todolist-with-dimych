@@ -5,7 +5,9 @@ import {fetchTodolistsTC, TodolistDomainType} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import {TodolistWithRedux} from "./Todolist/TodolistWithRedux";
 import {useAppWithRedux} from "../../app/AppWithRedux/hooks/useAppWithRedux";
-import {useAppDispatch} from "../../app/store";
+import {AppRootState, useAppDispatch} from "../../app/store";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 
 export const TodolistList = ({demo = false}) => {
     const {
@@ -15,12 +17,18 @@ export const TodolistList = ({demo = false}) => {
         onChangeTLTitle,
         deleteTodoList
     } = useAppWithRedux();
-
+    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTodolistsTC())
-    }, [])
+        if (isLoggedIn){
+            dispatch(fetchTodolistsTC());
+        }
+    }, []);
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
+    };
 
     return (
         <>
