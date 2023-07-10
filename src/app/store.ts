@@ -4,8 +4,8 @@ import {AnyAction, combineReducers} from "redux";
 import thunkMiddleware, {ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
 import {appReducer} from "./app-reducer";
-import {authReducer} from "../features/Login/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
+import {authReducer} from "../features/Login/auth-reducer";
 
 const rootReducer = combineReducers({
     todolists: todolistReducer,

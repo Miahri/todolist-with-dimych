@@ -14,10 +14,10 @@ const slice = createSlice({
     name: 'auth',
     initialState: initialState,
     reducers: {
-        setIsLoggedInAC(state, action: PayloadAction<{value: boolean}>) {
+        setIsLoggedInAC: (state, action: PayloadAction<{value: boolean}>) => {
             state.isLoggedIn = action.payload.value;
         },
-        setIsInitializedAC(state, action: PayloadAction<{isInitialized: boolean}>) {
+        setIsInitializedAC: (state, action: PayloadAction<{isInitialized: boolean}>) => {
             state.isInitialized = action.payload.isInitialized;
         }
     }
@@ -43,12 +43,12 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
         })
 }
 export const loginTC = (data: loginDataType) => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(setStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: res.data.data.userId !== 0}))
-                dispatch(setStatusAC('succeeded'))
+                dispatch(setStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -58,12 +58,12 @@ export const loginTC = (data: loginDataType) => (dispatch: Dispatch) => {
         })
 }
 export const logoutTC = () => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(setStatusAC({status: 'loading'}))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setStatusAC('succeeded'))
+                dispatch(setStatusAC({status: 'succeeded'}))
                 dispatch(clearTodoListsDataAC())
             } else {
                 handleServerAppError(res.data, dispatch)

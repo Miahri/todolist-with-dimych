@@ -100,12 +100,12 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) => {
 //thunk
 export const fetchTasksTC = (todolistId: string) => {
     return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'));
+        dispatch(setStatusAC({status: 'loading'}));
         todolistsAPI.getTasks(todolistId)
             .then((res) => {
                 debugger;
                 dispatch(setTasksAC(res.data.items, todolistId))
-                dispatch(setStatusAC('succeeded'));
+                dispatch(setStatusAC({status: 'succeeded'}));
             })
 
     }
@@ -113,12 +113,12 @@ export const fetchTasksTC = (todolistId: string) => {
 
 export const removeTaskTC = (taskId: string, todolistId: string) => {
     return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'));
+        dispatch(setStatusAC({status: 'loading'}));
         todolistsAPI.deleteTask(taskId, todolistId)
             .then((res) => {
                 if (res.data.resultCode === 0) {
                     dispatch(removeTaskAC(taskId, todolistId));
-                    dispatch(setStatusAC('succeeded'));
+                    dispatch(setStatusAC({status: 'succeeded'}));
                 } else {
                     handleServerAppError(res.data, dispatch);
                 }
@@ -131,13 +131,13 @@ export const removeTaskTC = (taskId: string, todolistId: string) => {
 
 export const addTaskTC = (title: string, todolistId: string) => {
     return (dispatch: Dispatch) => {
-        dispatch(setStatusAC('loading'));
+        dispatch(setStatusAC({status: 'loading'}));
         todolistsAPI.createTask(title, todolistId)
             .then((res) => {
                 debugger;
                 if (res.data.resultCode === 0) {
                     dispatch(addTaskAC(res.data.data.item));
-                    dispatch(setStatusAC('succeeded'));
+                    dispatch(setStatusAC({status: 'succeeded'}));
                 } else {
                     handleServerAppError(res.data, dispatch);
                 }
@@ -171,7 +171,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskType, 
             .then((res) => {
                 if (res.data.resultCode === 0) {
                     dispatch(updateTaskAC(taskId, model, todolistId))
-                    dispatch(setStatusAC('succeeded'));
+                    dispatch(setStatusAC({status: 'succeeded'}));
                 } else {
                     handleServerAppError(res.data, dispatch);
                 }
