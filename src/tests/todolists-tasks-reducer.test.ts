@@ -8,8 +8,8 @@ test("ids should be equal", () => {
     const startTasksState: AllTasksType = {};
     const startTodolistsState: Array<TodolistDomainType> = [];
 
-    const action = addTodolistAC({id: v1(),
-        title: "new todolist", addedDate: '', order: 0});
+    const action = addTodolistAC({todolist: {id: v1(),
+        title: "new todolist", addedDate: '', order: 0}});
     const endTasksState = tasksReducer(startTasksState, action);
     const endTodolistsState = todolistReducer(startTodolistsState, action);
 
@@ -17,8 +17,8 @@ test("ids should be equal", () => {
     const idFromTasks = keys[0];
     const idFromTodolists = endTodolistsState[0].id;
 
-    expect(idFromTasks).toBe(action.todolist.id);
-    expect(idFromTodolists).toBe(action.todolist.id);
+    expect(idFromTasks).toBe(action.payload.todolist.id);
+    expect(idFromTodolists).toBe(action.payload.todolist.id);
 })
 
 test("empty arrays should be added when we set todoLists", () => {
@@ -27,7 +27,7 @@ test("empty arrays should be added when we set todoLists", () => {
         {id: "todoListId2", title: 'What to buy', addedDate: '', order: 0},
     ];
 
-    const action = setTodolistsAC(startState);
+    const action = setTodolistsAC({todolists: startState});
     const endTasksState = tasksReducer({}, action);
 
     const keys = Object.keys(endTasksState);

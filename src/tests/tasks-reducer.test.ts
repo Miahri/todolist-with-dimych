@@ -78,7 +78,7 @@ test('title of specified task should be changed', () => {
 });
 
 test("new array should be added when new todolist added", () => {
-    const action = addTodolistAC({id: v1(), title: 'new todolist', addedDate: '', order: 0});
+    const action = addTodolistAC({todolist: {id: v1(), title: 'new todolist', addedDate: '', order: 0}});
     const endState = tasksReducer(startState, action)
 
     const keys = Object.keys(endState);
@@ -92,7 +92,7 @@ test("new array should be added when new todolist added", () => {
 });
 
 test("property with todolist should be deleted", () => {
-    const action = removeTodolistAC("todolist1");
+    const action = removeTodolistAC({id: "todolist1"});
     const endState1 = tasksReducer(startState, action);
 
     const keys = Object.keys(endState1);

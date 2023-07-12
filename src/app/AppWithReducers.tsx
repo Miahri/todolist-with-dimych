@@ -46,7 +46,7 @@ const Component = () => {
     }
 
     const addTodoList = (title: string) => {
-        const action = addTodolistAC({id: v1(), title, addedDate: '', order: 0});
+        const action = addTodolistAC({todolist: {id: v1(), title, addedDate: '', order: 0}});
         dispatchToTasksReducer(action);
         dispatchToTodolistsReducer(action);
     }
@@ -57,7 +57,7 @@ const Component = () => {
     }
 
     const changeFilter = (filter: FilterType, todoListId: string) => {
-        dispatchToTodolistsReducer(changeFilterAC(todoListId, filter));
+        dispatchToTodolistsReducer(changeFilterAC({id: todoListId, filter}));
     }
 
     const changeStatus = (id: string, status: TaskStatuses, todoListId: string) => {
@@ -70,12 +70,12 @@ const Component = () => {
     }
 
     const onChangeTLTitle = (title: string, todoListId: string) => {
-        const action = changeTodolistTitleAC(todoListId, title);
+        const action = changeTodolistTitleAC({id: todoListId, title});
         dispatchToTodolistsReducer(action);
     }
 
     const deleteTodoList = (todoListId: string) => {
-        const action = removeTodolistAC(todoListId);
+        const action = removeTodolistAC({id: todoListId});
         dispatchToTasksReducer(action);
         dispatchToTodolistsReducer(action);
     }

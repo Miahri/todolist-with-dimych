@@ -22,36 +22,36 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-    const endState = todolistReducer(startState, removeTodolistAC(todoListId1));
+    const endState = todolistReducer(startState, removeTodolistAC({id: todoListId1}));
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todoListId2);
 })
 
 test('correct todolist should be added', () => {
-    const endState = todolistReducer(startState, addTodolistAC({id: todoListId1,
-        title: 'Where to travel', addedDate: '', order: 0}));
+    const endState = todolistReducer(startState, addTodolistAC({todolist: {id: todoListId1,
+        title: 'Where to travel', addedDate: '', order: 0}}));
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe('Where to travel');
 })
 
 test('correct todolist filter should be changed', () => {
-    const endState = todolistReducer(startState, changeFilterAC(todoListId1, 'active'));
+    const endState = todolistReducer(startState, changeFilterAC({id: todoListId1, filter: 'active'}));
 
     expect(endState.length).toBe(2);
     expect(endState[0].filter).toBe('active');
 })
 
 test('correct todolist title should be changed', () => {
-    const endState = todolistReducer(startState, changeTodolistTitleAC(todoListId2, 'Where to go'));
+    const endState = todolistReducer(startState, changeTodolistTitleAC({id: todoListId2, title: 'Where to go'}));
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe('Where to go');
 })
 
 test('correct todoLists should be set', () => {
-    const endState = todolistReducer([], setTodolistsAC(startState));
+    const endState = todolistReducer([], setTodolistsAC({todolists: startState}));
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe('What to buy');

@@ -18,7 +18,7 @@ export function useAppWithRedux() {
     }, [dispatch]);
 
     const changeFilter = useCallback((filter: FilterType, todoListId: string) => {
-        dispatch(changeFilterAC(todoListId, filter));
+        dispatch(changeFilterAC({id: todoListId, filter}));
     }, [dispatch])
 
     const onChangeTLTitle = useCallback((title: string, todoListId: string) => {
