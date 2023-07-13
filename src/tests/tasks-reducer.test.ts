@@ -33,7 +33,7 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-    const action = removeTaskAC("2", "todolist2");
+    const action = removeTaskAC({taskId: "2", todolistId: "todolist2"});
 
     const endState = tasksReducer(startState, action);
 
@@ -44,9 +44,9 @@ test('correct task should be deleted from correct array', () => {
 });
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC({id: v1(), title: 'juice', status: TaskStatuses.New,
+    const action = addTaskAC({task: {id: v1(), title: 'juice', status: TaskStatuses.New,
         todoListId: "todolist2", addedDate: '',
-        order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''});
+        order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''}});
 
     const endState = tasksReducer(startState, action);
 
@@ -58,7 +58,7 @@ test('correct task should be added to correct array', () => {
 });
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskAC("2", {status: TaskStatuses.New}, "todolist2");
+    const action = updateTaskAC({taskId: "2", model: {status: TaskStatuses.New}, todolistId: "todolist2"});
 
     const endState = tasksReducer(startState, action);
 
@@ -68,7 +68,7 @@ test('status of specified task should be changed', () => {
 });
 
 test('title of specified task should be changed', () => {
-    const action = updateTaskAC("2", {title: "Milkyway"}, "todolist2");
+    const action = updateTaskAC({taskId: "2", model: {title: "Milkyway"}, todolistId: "todolist2"});
 
     const endState = tasksReducer(startState, action);
 
@@ -102,7 +102,7 @@ test("property with todolist should be deleted", () => {
 })
 
 test("new array should be added when new todolist added", () => {
-    const action = setTasksAC(startState["todolist1"], "todolist1");
+    const action = setTasksAC({tasks: startState["todolist1"], todolistId: "todolist1"});
     const endState = tasksReducer({}, action)
 
     const keys = Object.keys(endState);

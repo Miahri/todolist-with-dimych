@@ -12,7 +12,7 @@ export type TodolistDomainType = TodolistType & {
 const initialState: Array<TodolistDomainType> = []
 
 const slice = createSlice({
-    name: 'app',
+    name: 'todolist',
     initialState: initialState,
     reducers: {
         removeTodolistAC(state, action: PayloadAction<{id: string}>){
