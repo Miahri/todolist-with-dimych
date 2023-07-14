@@ -1,10 +1,10 @@
 import {AppWithRedux} from "../AppWithRedux";
-import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
+import {BrowserRouterDecorator, ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
 export default {
     title: 'TODOLIST/app',
     component: AppWithRedux,
-    decorators: [ReduxStoreProviderDecorator]
+    decorators: [ReduxStoreProviderDecorator, BrowserRouterDecorator]
 }
 
 export const AppWithReduxExample = () => {
