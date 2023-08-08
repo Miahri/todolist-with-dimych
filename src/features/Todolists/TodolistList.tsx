@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import Grid from "@mui/material/Grid";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
+import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {fetchTodolistsTC, TodolistDomainType} from "./todolist-reducer";
 import Paper from "@mui/material/Paper";
 import {TodolistWithRedux} from "./Todolist/TodolistWithRedux";
-import {useAppWithRedux} from "../../app/AppWithRedux/hooks/useAppWithRedux";
-import {AppRootState, useAppDispatch} from "../../app/store";
+import {useAppWithRedux} from "app/AppWithRedux/hooks/useAppWithRedux";
+import {AppRootState, useAppDispatch} from "app/store";
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router-dom";
 

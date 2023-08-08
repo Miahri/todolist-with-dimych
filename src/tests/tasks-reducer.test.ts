@@ -1,12 +1,11 @@
-import {AllTasksType} from "../app/App/App";
+import {AllTasksType} from "app/App/App";
 import {
-    addTaskAC,
+    addTaskAC, fetchTasksTC,
     removeTaskAC,
-    setTasksAC,
     tasksReducer, updateTaskAC
-} from "../features/Todolists/tasks-reducer";
-import {addTodolistAC, removeTodolistAC} from "../features/Todolists/todolist-reducer";
-import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+} from "features/Todolists/tasks-reducer";
+import {addTodolistAC, removeTodolistAC} from "features/Todolists/todolist-reducer";
+import {TaskPriorities, TaskStatuses} from "api/todolists-api";
 import {v1} from "uuid";
 
 let startState: AllTasksType;
@@ -102,7 +101,7 @@ test("property with todolist should be deleted", () => {
 })
 
 test("new array should be added when new todolist added", () => {
-    const action = setTasksAC({tasks: startState["todolist1"], todolistId: "todolist1"});
+    const action = fetchTasksTC.fulfilled({tasks: startState["todolist1"], todolistId: "todolist1"}, 'requestId', 'todolist1');
     const endState = tasksReducer({}, action)
 
     const keys = Object.keys(endState);
