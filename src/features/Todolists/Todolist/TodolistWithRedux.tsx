@@ -41,8 +41,8 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
         filteredTasks = filteredTasks.filter((t: TaskType) => t.status !== TaskStatuses.New)
     }
 
-    const removeTask = useCallback((id: string, todoListId: string) => {
-        dispatch(removeTaskTC(id, todoListId));
+    const removeTask = useCallback((taskId: string, todolistId: string) => {
+        dispatch(removeTaskTC({taskId, todolistId}));
     }, [dispatch])
 
     const changeStatus = useCallback((id: string, status: TaskStatuses, todoListId: string) => {

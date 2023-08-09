@@ -1,7 +1,7 @@
-import {AllTasksType} from "../app/App/App";
-import {addTodolistAC, setTodolistsAC, TodolistDomainType, todolistReducer} from "../features/Todolists/todolist-reducer";
-import {tasksReducer} from "../features/Todolists/tasks-reducer";
-import {TodolistType} from "../api/todolists-api";
+import {AllTasksType} from "app/App/App";
+import {addTodolistAC, setTodolistsAC, TodolistDomainType, todolistReducer} from "features/Todolists/todolist-reducer";
+import {tasksReducer} from "features/Todolists/tasks-reducer";
+import {TodolistType} from "api/todolists-api";
 import {v1} from "uuid";
 
 test("ids should be equal", () => {
