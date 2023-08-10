@@ -54,7 +54,7 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
     }, [dispatch])
 
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskTC(title, props.todolist.id))
+        dispatch(addTaskTC({title, todolistId: props.todolist.id}))
     }, []);
 
     const changeFilter = useCallback((filter: FilterType) => {

@@ -1,6 +1,7 @@
 import {AllTasksType} from "app/App/App";
 import {
-    addTaskAC, fetchTasksTC, removeTaskTC,
+    addTaskTC,
+    fetchTasksTC, removeTaskTC,
     tasksReducer, updateTaskAC
 } from "features/Todolists/tasks-reducer";
 import {addTodolistAC, removeTodolistAC} from "features/Todolists/todolist-reducer";
@@ -42,9 +43,10 @@ test('correct task should be deleted from correct array', () => {
 });
 
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC({task: {id: v1(), title: 'juice', status: TaskStatuses.New,
+    const task = {id: v1(), title: 'juice', status: TaskStatuses.New,
         todoListId: "todolist2", addedDate: '',
-        order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''}});
+        order: 0, description: '', priority: TaskPriorities.Low, startDate: '', deadline: ''}
+    const action = addTaskTC.fulfilled({task}, 'requestId', {title: task.title, todolistId: task.todoListId});
 
     const endState = tasksReducer(startState, action);
 

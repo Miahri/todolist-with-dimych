@@ -1,7 +1,7 @@
-import {todolistsAPI, TodolistType} from "../../api/todolists-api";
+import {todolistsAPI, TodolistType} from "api/todolists-api";
 import {Dispatch} from "redux";
-import {RequestStatusType, setStatusAC} from "../../app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {RequestStatusType, setStatusAC} from "app/app-reducer";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type FilterType = 'all' | 'active' | 'completed'
