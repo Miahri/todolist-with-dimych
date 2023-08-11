@@ -2,10 +2,10 @@ import {v1} from "uuid";
 import {
     addTodolistAC,
     changeFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC, setTodolistsAC, TodolistDomainType,
+    changeTodolistTitleAC, fetchTodolistsTC,
+    removeTodolistAC, TodolistDomainType,
     todolistReducer
-} from "../features/Todolists/todolist-reducer";
+} from "features/Todolists/todolist-reducer";
 
 let startState: Array<TodolistDomainType>;
 let todoListId1: string;
@@ -51,7 +51,7 @@ test('correct todolist title should be changed', () => {
 })
 
 test('correct todoLists should be set', () => {
-    const endState = todolistReducer([], setTodolistsAC({todolists: startState}));
+    const endState = todolistReducer([], fetchTodolistsTC.fulfilled({todolists: startState}, 'requestId'));
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe('What to buy');

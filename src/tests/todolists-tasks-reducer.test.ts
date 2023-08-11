@@ -1,5 +1,10 @@
 import {AllTasksType} from "app/App/App";
-import {addTodolistAC, setTodolistsAC, TodolistDomainType, todolistReducer} from "features/Todolists/todolist-reducer";
+import {
+    addTodolistAC,
+    fetchTodolistsTC,
+    TodolistDomainType,
+    todolistReducer
+} from "features/Todolists/todolist-reducer";
 import {tasksReducer} from "features/Todolists/tasks-reducer";
 import {TodolistType} from "api/todolists-api";
 import {v1} from "uuid";
@@ -27,7 +32,7 @@ test("empty arrays should be added when we set todoLists", () => {
         {id: "todoListId2", title: 'What to buy', addedDate: '', order: 0},
     ];
 
-    const action = setTodolistsAC({todolists: startState});
+    const action = fetchTodolistsTC.fulfilled({todolists: startState}, 'requestId');
     const endTasksState = tasksReducer({}, action);
 
     const keys = Object.keys(endTasksState);
