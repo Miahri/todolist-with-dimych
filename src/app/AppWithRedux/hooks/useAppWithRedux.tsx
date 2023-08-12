@@ -1,13 +1,13 @@
 import {useCallback} from "react";
 import {useSelector} from "react-redux";
-import {AppRootState, useAppDispatch} from "../../store";
+import {AppRootState, useAppDispatch} from "app/store";
 import {
     addTodolistTC,
     changeFilterAC,
     changeTodolistTitleTC, deleteTodolistTC,
     FilterType,
     TodolistDomainType
-} from "../../../features/Todolists/todolist-reducer";
+} from "features/Todolists/todolist-reducer";
 
 export function useAppWithRedux() {
     const dispatch = useAppDispatch();
@@ -26,7 +26,7 @@ export function useAppWithRedux() {
     }, [dispatch])
 
     const deleteTodoList = useCallback((todoListId: string) => {
-        dispatch(deleteTodolistTC(todoListId));
+        dispatch(deleteTodolistTC({todoListId}));
     }, [dispatch])
 
 

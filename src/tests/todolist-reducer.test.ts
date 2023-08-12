@@ -2,8 +2,8 @@ import {v1} from "uuid";
 import {
     addTodolistAC,
     changeFilterAC,
-    changeTodolistTitleAC, fetchTodolistsTC,
-    removeTodolistAC, TodolistDomainType,
+    changeTodolistTitleAC, deleteTodolistTC, fetchTodolistsTC,
+    TodolistDomainType,
     todolistReducer
 } from "features/Todolists/todolist-reducer";
 
@@ -22,7 +22,7 @@ beforeEach(() => {
 })
 
 test('correct todolist should be removed', () => {
-    const endState = todolistReducer(startState, removeTodolistAC({id: todoListId1}));
+    const endState = todolistReducer(startState, deleteTodolistTC.fulfilled({id: todoListId1}, 'requestId', {todoListId: todoListId1}));
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todoListId2);
