@@ -10,7 +10,8 @@ import {AppRootState} from "app/store";
 import {setStatusAC} from "app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {
-  addTodolistAC, deleteTodolistTC, fetchTodolistsTC
+  addTodolistTC,
+  deleteTodolistTC, fetchTodolistsTC
 } from "./todolist-reducer";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
@@ -110,7 +111,7 @@ const slice = createSlice({
     builder.addCase(deleteTodolistTC.fulfilled, (state, action) => {
       delete state[action.payload.id];
     });
-    builder.addCase(addTodolistAC, (state, action) => {
+    builder.addCase(addTodolistTC.fulfilled, (state, action) => {
       state[action.payload.todolist.id] = [];
     });
     builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {

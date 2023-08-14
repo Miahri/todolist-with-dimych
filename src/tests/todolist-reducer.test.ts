@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {
-    addTodolistAC,
+    addTodolistTC,
     changeFilterAC,
     changeTodolistTitleAC, deleteTodolistTC, fetchTodolistsTC,
     TodolistDomainType,
@@ -29,8 +29,8 @@ test('correct todolist should be removed', () => {
 })
 
 test('correct todolist should be added', () => {
-    const endState = todolistReducer(startState, addTodolistAC({todolist: {id: todoListId1,
-        title: 'Where to travel', addedDate: '', order: 0}}));
+    const param = {todolist: {id: todoListId1, title: 'Where to travel', addedDate: '', order: 0}};
+    const endState = todolistReducer(startState, addTodolistTC.fulfilled(param, 'requestId', param.todolist.title));
 
     expect(endState.length).toBe(3);
     expect(endState[0].title).toBe('Where to travel');

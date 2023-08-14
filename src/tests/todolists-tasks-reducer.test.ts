@@ -1,6 +1,6 @@
 import {AllTasksType} from "app/App/App";
 import {
-    addTodolistAC,
+    addTodolistTC,
     fetchTodolistsTC,
     TodolistDomainType,
     todolistReducer
@@ -13,8 +13,8 @@ test("ids should be equal", () => {
     const startTasksState: AllTasksType = {};
     const startTodolistsState: Array<TodolistDomainType> = [];
 
-    const action = addTodolistAC({todolist: {id: v1(),
-        title: "new todolist", addedDate: '', order: 0}});
+    const param = {todolist: {id: v1(), title: "new todolist", addedDate: '', order: 0}};
+    const action = addTodolistTC.fulfilled(param, 'requestId', param.todolist.title);
     const endTasksState = tasksReducer(startTasksState, action);
     const endTodolistsState = todolistReducer(startTodolistsState, action);
 
