@@ -22,7 +22,7 @@ export function useAppWithRedux() {
   }, [dispatch])
 
   const onChangeTLTitle = useCallback((title: string, todoListId: string) => {
-    dispatch(changeTodolistTitleTC(todoListId, title));
+    dispatch(changeTodolistTitleTC({id: todoListId, title}));
   }, [dispatch])
 
   const deleteTodoList = useCallback((todoListId: string) => {

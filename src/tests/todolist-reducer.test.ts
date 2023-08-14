@@ -1,8 +1,7 @@
 import {v1} from "uuid";
 import {
     addTodolistTC,
-    changeFilterAC,
-    changeTodolistTitleAC, deleteTodolistTC, fetchTodolistsTC,
+    changeFilterAC, changeTodolistTitleTC, deleteTodolistTC, fetchTodolistsTC,
     TodolistDomainType,
     todolistReducer
 } from "features/Todolists/todolist-reducer";
@@ -44,7 +43,8 @@ test('correct todolist filter should be changed', () => {
 })
 
 test('correct todolist title should be changed', () => {
-    const endState = todolistReducer(startState, changeTodolistTitleAC({id: todoListId2, title: 'Where to go'}));
+    const param = {id: todoListId2, title: 'Where to go'};
+    const endState = todolistReducer(startState, changeTodolistTitleTC.fulfilled(param, 'requestId', param));
 
     expect(endState.length).toBe(2);
     expect(endState[1].title).toBe('Where to go');
