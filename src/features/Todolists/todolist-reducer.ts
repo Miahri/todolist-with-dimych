@@ -8,7 +8,7 @@ export type FilterType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
   filter: FilterType
   entityStatus: RequestStatusType
-}
+};
 
 export const fetchTodolistsTC = createAsyncThunk('todolists/fetchTodolists', async (param, thunkAPI) => {
   thunkAPI.dispatch(setStatusAC({status: 'loading'}));

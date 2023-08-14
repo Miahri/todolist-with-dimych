@@ -24,7 +24,7 @@ test("ids should be equal", () => {
 
     expect(idFromTasks).toBe(action.payload.todolist.id);
     expect(idFromTodolists).toBe(action.payload.todolist.id);
-})
+});
 
 test("empty arrays should be added when we set todoLists", () => {
     let startState: Array<TodolistType> = [

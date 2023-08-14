@@ -40,7 +40,7 @@ test('correct todolist filter should be changed', () => {
 
     expect(endState.length).toBe(2);
     expect(endState[0].filter).toBe('active');
-})
+});
 
 test('correct todolist title should be changed', () => {
     const param = {id: todoListId2, title: 'Where to go'};
