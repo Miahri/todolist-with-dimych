@@ -14,12 +14,12 @@ export const loginTC = createAsyncThunk('auth/login', async (data: loginDataType
       return {value: res.data.data.userId !== 0};
     } else {
       handleServerAppError(res.data, thunkAPI.dispatch);
-      return thunkAPI.rejectWithValue(null);
+      return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldErrors});
     }
   } catch(error: any) {
     const err: AxiosError = error;
     handleServerNetworkError(err, thunkAPI.dispatch);
-    return thunkAPI.rejectWithValue(null);
+    return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined});
   }
 })
 
