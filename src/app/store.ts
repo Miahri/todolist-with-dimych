@@ -1,11 +1,11 @@
-import {todolistReducer} from "../features/Todolists/todolist-reducer";
-import {tasksReducer} from "../features/Todolists/tasks-reducer";
-import {AnyAction, combineReducers} from "redux";
-import thunkMiddleware, {ThunkDispatch} from "redux-thunk";
+import {todolistReducer} from "features/Todolists/todolist-reducer";
+import {tasksReducer} from "features/Todolists/tasks-reducer";
+import { AnyAction, combineReducers } from "redux";
+import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
 import {useDispatch} from "react-redux";
 import {appReducer} from "./app-reducer";
 import {configureStore} from "@reduxjs/toolkit";
-import {authReducer} from "../features/Login/auth-reducer";
+import {authReducer} from "features/Login/auth-reducer";
 
 const rootReducer = combineReducers({
     todolists: todolistReducer,
@@ -23,9 +23,10 @@ export const store = configureStore({
     middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
 })
 
-export type AppDispatchType = ThunkDispatch<AppRootState, any, AnyAction>
-
-export const useAppDispatch = () => useDispatch<AppDispatchType>()
-
 //@ts-ignore
 window.store = store;
+
+export type AppDispatchType = ThunkDispatch<AppRootState, any, AnyAction>
+//export type AppDispatchType = typeof store.dispatch;
+
+export const useAppDispatch = () => useDispatch<AppDispatchType>()
