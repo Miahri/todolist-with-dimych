@@ -1,9 +1,9 @@
-import {Dispatch} from 'redux'
 import {setStatusAC} from 'app/app-reducer'
 import { authAPI, FieldErrorType, loginDataType } from "api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+import { clearTasksAndTodolist } from "common/actions/common.actions";
 
 export const loginTC = createAsyncThunk<{value: boolean}, loginDataType, {
   rejectValue: {errors: Array<string>, fieldsErrors?: Array<FieldErrorType>}
@@ -23,6 +23,42 @@ export const loginTC = createAsyncThunk<{value: boolean}, loginDataType, {
     handleServerNetworkError(err, thunkAPI.dispatch);
     return thunkAPI.rejectWithValue({errors: [err.message], fieldsErrors: undefined});
   }
+});
+
+export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
+  thunkAPI.dispatch(setStatusAC({status: 'loading'}));
+  try {
+    const res = await authAPI.logout();
+    if (res.data.resultCode === 0) {
+      thunkAPI.dispatch(setStatusAC({ status: 'succeeded' }));
+      thunkAPI.dispatch(clearTasksAndTodolist)
+      return { value: false };
+    } else {
+      handleServerAppError(res.data, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue({});
+    }
+  } catch(error: any) {
+    const err: AxiosError = error;
+    handleServerNetworkError(err, thunkAPI.dispatch);
+    return thunkAPI.rejectWithValue({});
+  }
+});
+
+export const initializeAppTC = createAsyncThunk('auth/initializeApp', async (param, thunkAPI) => {
+  try {
+    const res = await authAPI.me();
+    if (res.data.resultCode === 0) {
+      thunkAPI.dispatch(loginTC.fulfilled({value: true}, 'requestId', res.data.data));
+    } else {
+      handleServerAppError(res.data, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue(null);
+    }
+  } catch(error: any) {
+    const err: AxiosError = error;
+      handleServerNetworkError(err, thunkAPI.dispatch);
+      thunkAPI.rejectWithValue(null);
+  }
+  return{isInitialized: true};
 })
 
 const slice = createSlice({
@@ -31,56 +67,23 @@ const slice = createSlice({
       isLoggedIn: false,
       isInitialized: false
     },
-    reducers: {
-        setIsLoggedInAC: (state, action: PayloadAction<{value: boolean}>) => {
-          state.isLoggedIn = action.payload.value;
-        },
-        setIsInitializedAC: (state, action: PayloadAction<{isInitialized: boolean}>) => {
-            state.isInitialized = action.payload.isInitialized;
-        }
-    },
+    reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginTC.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.isLoggedIn = action.payload.value;
-      }
+    builder.addCase(loginTC.fulfilled, (state) => {
+        state.isLoggedIn = true;
+    });
+    builder.addCase(logoutTC.fulfilled, (state) => {
+        state.isLoggedIn = false;
+    });
+    builder.addCase(initializeAppTC.fulfilled, (state) => {
+      state.isInitialized = true;
     });
   }
 });
 
 export const authReducer = slice.reducer;
-const {setIsLoggedInAC, setIsInitializedAC} = slice.actions;
 
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-    authAPI.me()
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: true}));
-            } else {
-                handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch((error) => {
-            handleServerNetworkError(error.message, dispatch)
-        })
-        .finally(() => {
-            dispatch(setIsInitializedAC({isInitialized: true}))
-        })
-}
 
-export const logoutTC = () => (dispatch: Dispatch) => {
-    dispatch(setStatusAC({status: 'loading'}))
-    authAPI.logout()
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setStatusAC({status: 'succeeded'}))
-            } else {
-                handleServerAppError(res.data, dispatch)
-            }
-        })
-        .catch((error) => {
-            handleServerNetworkError(error, dispatch)
-        })
-}
+
+
 

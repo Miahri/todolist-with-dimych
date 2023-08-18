@@ -3,6 +3,7 @@ import {RequestStatusType, setStatusAC} from "app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
+import { clearTasksAndTodolist } from "common/actions/common.actions";
 
 export type FilterType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
@@ -104,6 +105,9 @@ const slice = createSlice({
     builder.addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
       const index = state.findIndex(tl => tl.id === action.payload.id);
       state[index].title = action.payload.title;
+    });
+    builder.addCase(clearTasksAndTodolist.type, () => {
+      return [];
     });
   }
 })

@@ -15,6 +15,7 @@ import {
 } from "./todolist-reducer";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
+import { clearTasksAndTodolist } from "common/actions/common.actions";
 
 type UpdateDomainTaskType = {
   title?: string
@@ -138,6 +139,9 @@ const slice = createSlice({
       if (index > -1) {
         tasks[index] = {...tasks[index], ...action.payload.domainModel};
       }
+    });
+    builder.addCase(clearTasksAndTodolist.type, () => {
+      return {};
     });
   }
 })
