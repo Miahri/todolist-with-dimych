@@ -1,4 +1,4 @@
-import {AppWithRedux} from "../AppWithRedux";
+import {AppWithRedux} from "../AppWithRedux/AppWithRedux";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
 export default {

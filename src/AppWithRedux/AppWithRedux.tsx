@@ -1,7 +1,7 @@
-import React, {useCallback} from 'react';
-import './App.css';
-import {TodolistWithRedux} from "./TodolistWithRedux";
-import {AddItemForm} from "./AddItemForm/AddItemForm";
+import React from 'react';
+import '../App.css';
+import {TodolistWithRedux} from "../TodolistWithRedux";
+import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {
     AppBar,
     Container,
@@ -14,14 +14,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { createTheme, ThemeProvider, Theme} from '@mui/material/styles';
 import {Menu} from "@mui/icons-material";
-import {
-    addTodolistAC,
-    changeFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC
-} from "./state/todolist-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "./state/store";
+import {useAppWithRedux} from "./hooks/useAppWithRedux";
 
 const theme = createTheme();
 
@@ -44,29 +37,15 @@ export type TodolistType = {
 }
 
 const Component = () => {
+    const {
+        todoLists,
+        addTodoList,
+        changeFilter,
+        onChangeTLTitle,
+        deleteTodoList
+    } = useAppWithRedux();
+
     const classes = useStyles();
-
-    const dispatch = useDispatch();
-    const todoLists = useSelector<AppRootState, Array<TodolistType>>(state => state.todolists);
-
-    const addTodoList = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
-    }, [dispatch]);
-
-    const changeFilter = useCallback((filter: FilterType, todoListId: string) => {
-        dispatch(changeFilterAC(todoListId, filter));
-    }, [dispatch])
-
-    const onChangeTLTitle = useCallback((title: string, todoListId: string) => {
-        const action = changeTodolistTitleAC(todoListId, title);
-        dispatch(action);
-    }, [dispatch])
-
-    const deleteTodoList = useCallback((todoListId: string) => {
-        const action = removeTodolistAC(todoListId);
-        dispatch(action);
-    }, [dispatch])
 
     return (
         <div>
