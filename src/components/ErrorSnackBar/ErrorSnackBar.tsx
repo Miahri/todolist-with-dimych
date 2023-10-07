@@ -1,34 +1,35 @@
-import * as React from 'react';
-import Snackbar from '@mui/material/Snackbar';
+import React from 'react'
+import {useSelector} from 'react-redux'
+import {appActions} from '../../features/CommonActions/App'
+import {AppRootStateType} from '../../utils/types'
+import {useActions} from '../../utils/redux-utils'
+import {Snackbar} from "@mui/material";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../app/store";
-import {setErrorAC} from "../../app/app-reducer";
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 
-export const ErrorSnackbar = () => {
-    const error = useSelector<AppRootState, string | null>(state => state.app.error);
-    const dispatch = useDispatch();
+export function ErrorSnackbar() {
+    //const [open, setOpen] = React.useState(true)
+    const error = useSelector<AppRootStateType, string | null>(state => state.app.error);
+    const {setAppError} = useActions(appActions)
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
-            return;
+            return
         }
+        setAppError({error: null});
+    }
 
-        dispatch(setErrorAC({error: null}));
-    };
+
+    const isOpen = error !== null;
 
     return (
-            <Snackbar open={error !== null} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                    {error}
-                </Alert>
-            </Snackbar>
-    );
+        <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="error">
+                {error}
+            </Alert>
+        </Snackbar>
+    )
 }
