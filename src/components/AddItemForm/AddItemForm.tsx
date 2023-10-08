@@ -1,35 +1,50 @@
-import React from "react";
-import {useAddItemForm} from "./hooks/useAddItemForm";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {AddBox} from "@mui/icons-material";
+import {IconButton, TextField} from "@mui/material";
 
-type AddItemFormProps = {
-    addItem: (title: string) => void
+export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setTitle: (title: string) => void}
+type AddItemFormPropsType = {
+    addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
     disabled?: boolean
 }
 
-export const AddItemForm: React.FC<AddItemFormProps> = React.memo(({disabled = false, ...props}) => {
-    const {
-        inputValue,
-        error,
-        addTask,
-        inputValueChange,
-        keyPressHandler
-    } = useAddItemForm(props.addItem);
+export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
+    let [title, setTitle] = useState('')
+    let [error, setError] = useState<string | null>(null)
 
-    return(
-        <div>
-            <TextField
-                id="outlined-error-helper-text"
-                disabled={disabled}
-                error={!!error}
-                value={inputValue}
-                onChange={inputValueChange}
-                onKeyPress={keyPressHandler}
-                helperText={error}
-                variant="outlined"
-            />
-            <Button variant="contained" color="primary" onClick={addTask}>+</Button>
-        </div>
-    )
+    const addItemHandler = async () => {
+        if (title.trim() !== '') {
+                addItem(title, {setError, setTitle})
+        } else {
+            setError('Title is required')
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.currentTarget.value)
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null)
+        }
+        if (e.charCode === 13) {
+            addItemHandler()
+        }
+    }
+
+    return <div>
+        <TextField variant="outlined"
+                   disabled={disabled}
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItemHandler} disabled={disabled} style={{marginLeft: '5px'}}>
+            <AddBox/>
+        </IconButton>
+    </div>
 })

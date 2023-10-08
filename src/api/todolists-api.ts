@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from 'axios'
+import {GetTasksResponse, LoginParamsType, ResponseType, TaskType, TodolistType, UpdateTaskModelType} from './types'
 
 const settings = {
     withCredentials: true,
@@ -10,114 +11,46 @@ const settings = {
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     ...settings
-});
+})
 
-export type loginDataType = {
-    email: string
-    password: string
-    rememberMe: boolean
-}
-type postLoginDataResponseType = {
-    resultCode: number
-    messages: Array<string>,
-    data: {
-        userId: number
-    }
-}
-
-export enum TaskStatuses {
-    New = 0,
-    InProgress = 1,
-    Completed = 2,
-    Draft = 3
-}
-
-export enum TaskPriorities {
-    Low = 0,
-    Middle = 1,
-    High = 2,
-    Urgently = 3,
-    Later = 4
-}
-
-export type TodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
-}
-
-export type FieldErrorType = {field: string; error: string};
-export type ResponseType<D = {}> = {
-    resultCode: number
-    messages: Array<string>
-    fieldsErrors?: Array<FieldErrorType>
-    data: D
-}
-
-type GetTasksResponseType = {
-    totalCount: number
-    error: string | null
-    items: Array<TaskType>
-}
-
-export type UpdateTaskType = {
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
-
-export const authAPI = {
-    login(data: loginDataType) {
-        return instance.post(`auth/login`, data)
-    },
-    me() {
-        return instance.get(`auth/me`)
-    },
-    logout() {
-        return instance.delete(`auth/login`)
-    }
-}
-
+// api
 export const todolistsAPI = {
-    getTodolist() {
-        return instance.get<Array<TodolistType>>('todo-lists');
+    getTodolists() {
+        return instance.get<TodolistType[]>('todo-lists');
     },
     createTodolist(title: string) {
-        return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title: title});
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
     },
     deleteTodolist(id: string) {
         return instance.delete<ResponseType>(`todo-lists/${id}`);
     },
-    updateTodolistTitle(id: string, title: string) {
+    updateTodolist(id: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
     },
-    getTasks(todolistID: string) {
-        return instance.get<GetTasksResponseType>(`todo-lists/${todolistID}/tasks`);
+    getTasks(todolistId: string) {
+        return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
-    deleteTask(id: string, todolistID: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistID}/tasks/${id}`);
+    deleteTask(todolistId: string, taskId: string) {
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
-    createTask(title: string, todolistID: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistID}/tasks/`, {title: title});
+    createTask(todolistId: string, taskTitile: string) {
+        return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
     },
-    updateTask(taskID: string, todolistID: string, model: UpdateTaskType) {
-        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistID}/tasks/${taskID}`, model);
-    },
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
 }
+
+
+export const authAPI = {
+    login(data: LoginParamsType) {
+        return instance.post<ResponseType<{ userId?: number }>>('auth/login', data);
+    },
+    logout() {
+        return instance.delete<ResponseType<{ userId?: number }>>('auth/login');
+    },
+    me() {
+        return instance.get<ResponseType<{ id: number; email: string; login: string }>>('auth/me')
+    }
+}
+
