@@ -1,8 +1,8 @@
 import React, {ChangeEvent, useCallback} from 'react'
-import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
-import {tasksActions, todolistsActions} from '../../index'
-import {TaskStatuses, TaskType} from '../../../../api/types'
-import {useActions} from '../../../../utils/redux-utils'
+import {EditableSpan} from 'components/EditableSpan/EditableSpan'
+import {tasksActions} from '../../index'
+import {TaskStatuses, TaskType} from 'api/types'
+import {useActions} from 'utils/redux-utils'
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton} from "@mui/material";
 

@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm, AddItemFormSubmitHelperType} from '../../../components/AddItemForm/AddItemForm'
-import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
+import {AddItemForm, AddItemFormSubmitHelperType} from 'components/AddItemForm/AddItemForm'
+import {EditableSpan} from 'components/EditableSpan/EditableSpan'
 import {Task} from './Task/Task'
 import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
 import {tasksActions, todolistsActions} from '../index'
-import {TaskStatuses, TaskType} from '../../../api/types'
-import {useActions, useAppDispatch} from '../../../utils/redux-utils'
+import {TaskStatuses, TaskType} from "api/types"
+import {useActions, useAppDispatch} from 'utils/redux-utils'
 import {Delete} from "@mui/icons-material";
 import {Button, IconButton, Paper} from "@mui/material";
 

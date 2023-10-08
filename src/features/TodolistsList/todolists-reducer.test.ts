@@ -8,7 +8,7 @@ import {
 import {v1} from 'uuid'
 import {RequestStatusType} from '../Application/application-reducer'
 import {todolistsActions} from './'
-import {TodolistType} from '../../api/types'
+import {TodolistType} from 'api/types'
 
 const todolistsReducer = slice.reducer
 const {addTodolistTC, changeTodolistTitleTC, fetchTodolistsTC, removeTodolistTC} = todolistsActions

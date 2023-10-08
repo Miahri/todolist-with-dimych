@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import {appReducer} from '../features/Application'
-import {authReducer} from '../features/Auth'
-import {tasksReducer, todolistsReducer} from '../features/TodolistsList'
+import {appReducer} from "features/Application"
+import {authReducer} from "features/Auth"
+import {tasksReducer, todolistsReducer} from "features/TodolistsList"
 import {configureStore} from '@reduxjs/toolkit'
 
 // объединяя reducer-ы с помощью combineReducers,

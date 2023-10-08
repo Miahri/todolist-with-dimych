@@ -1,4 +1,4 @@
-import {authAPI} from '../../api/todolists-api'
+import {authAPI} from "api/todolists-api"
 import {authActions} from '../Auth'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {appActions} from '../CommonActions/App'

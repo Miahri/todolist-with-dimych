@@ -1,10 +1,10 @@
-import {todolistsAPI} from '../../api/todolists-api'
+import {todolistsAPI} from "api/todolists-api"
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {appActions} from '../CommonActions/App'
-import {handleAsyncServerAppError, handleAsyncServerNetworkError} from '../../utils/error-utils'
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "utils/error-utils"
 import {asyncActions as asyncTodolistsActions} from './todolists-reducer'
-import {AppRootStateType, ThunkError} from '../../utils/types'
-import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from '../../api/types'
+import {AppRootStateType, ThunkError} from "utils/types"
+import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "api/types"
 
 const initialState: TasksStateType = {}
 

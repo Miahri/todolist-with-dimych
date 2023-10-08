@@ -1,5 +1,5 @@
-import {rootReducer, store} from '../app/store'
-import {FieldErrorType} from '../api/types'
+import {rootReducer, store} from 'app/store'
+import {FieldErrorType} from 'api/types'
 
 
 // redux common types

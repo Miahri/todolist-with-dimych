@@ -2,13 +2,13 @@ import React, {useCallback, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import {TodolistDomainType} from './todolists-reducer'
 import {TasksStateType} from './tasks-reducer'
-import {AddItemForm, AddItemFormSubmitHelperType} from '../../components/AddItemForm/AddItemForm'
+import {AddItemForm, AddItemFormSubmitHelperType} from 'components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from 'react-router-dom'
 import {selectIsLoggedIn} from '../Auth/selectors'
-import {tasksActions, todolistsActions} from './index'
-import {AppRootStateType} from '../../utils/types'
-import {useActions, useAppDispatch} from '../../utils/redux-utils'
+import {todolistsActions} from './index'
+import {AppRootStateType} from 'utils/types'
+import {useActions, useAppDispatch} from 'utils/redux-utils'
 import {Grid} from "@mui/material";
 
 type PropsType = {
@@ -22,7 +22,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     const dispatch = useAppDispatch()
 
-    const {fetchTodolistsTC, addTodolistTC} = useActions(todolistsActions)
+    const {fetchTodolistsTC} = useActions(todolistsActions)
 
     const addTodolistCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
         let thunk = todolistsActions.addTodolistTC(title)
