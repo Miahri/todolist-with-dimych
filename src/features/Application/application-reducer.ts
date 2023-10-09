@@ -1,14 +1,23 @@
 import {authAPI} from "api/todolists-api"
-import {authActions} from '../Auth'
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 import {appActions} from '../CommonActions/App'
+import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 
-const initializeApp = createAsyncThunk('application/initializeApp',
-  async (param, {dispatch}) => {
-    const res = await authAPI.me()
-    if (res.data.resultCode === 0) {
-        dispatch(authActions.setIsLoggedIn({value: true}))
+const initializeApp = createAppAsyncThunk<{isLoggedIn: boolean}, undefined>('application/initializeApp',
+  async (_, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI;
+    try{
+        dispatch(appActions.setAppStatus({status: 'loading'}));
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            return {isLoggedIn: true};
+        } else {
+            return rejectWithValue(null);
+        }
+    } catch (error: any) {
+        return rejectWithValue(null);
     }
+
 })
 
 export const asyncActions = {

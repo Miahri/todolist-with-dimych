@@ -1,14 +1,15 @@
 import {todolistsAPI} from 'api/todolists-api'
 import {RequestStatusType} from '../Application'
 import {appActions} from '../CommonActions/App'
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {handleAsyncServerAppError, handleAsyncServerNetworkError,} from 'utils/error-utils'
 import {TodolistType} from 'api/types'
 import {ThunkError} from 'utils/types'
+import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 
 const {setAppStatus} = appActions
 
-const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefined, ThunkError>('todolists/fetchTodolists', async (param, thunkAPI) => {
+const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, undefined, ThunkError>('todolists/fetchTodolists', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await todolistsAPI.getTodolists()
@@ -18,7 +19,7 @@ const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }, undefin
         return handleAsyncServerNetworkError(error, thunkAPI)
     }
 })
-const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkError>('todolists/removeTodolist', async (todolistId, {dispatch, rejectWithValue}) => {
+const removeTodolistTC = createAppAsyncThunk<{ id: string }, string, ThunkError>('todolists/removeTodolist', async (todolistId, {dispatch, rejectWithValue}) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала
     dispatch(setAppStatus({status: 'loading'}))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
@@ -28,7 +29,7 @@ const removeTodolistTC = createAsyncThunk<{ id: string }, string, ThunkError>('t
     dispatch(setAppStatus({status: 'succeeded'}))
     return {id: todolistId}
 })
-const addTodolistTC = createAsyncThunk<{ todolist: TodolistType }, string, ThunkError>
+const addTodolistTC = createAppAsyncThunk<{ todolist: TodolistType }, string, ThunkError>
 ('todolists/addTodolist', async (title, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))
     try {
@@ -43,7 +44,7 @@ const addTodolistTC = createAsyncThunk<{ todolist: TodolistType }, string, Thunk
         return handleAsyncServerNetworkError(error, thunkAPI, false)
     }
 })
-const changeTodolistTitleTC = createAsyncThunk('todolists/changeTodolistTitle', async (param: { id: string, title: string }, thunkAPI) => {
+const changeTodolistTitleTC = createAppAsyncThunk('todolists/changeTodolistTitle', async (param: { id: string, title: string }, thunkAPI) => {
     try {
         const res = await todolistsAPI.updateTodolist(param.id, param.title)
         if (res.data.resultCode === 0) {

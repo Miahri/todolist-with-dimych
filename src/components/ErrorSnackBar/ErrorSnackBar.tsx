@@ -1,8 +1,8 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {appActions} from '../../features/CommonActions/App'
-import {AppRootStateType} from '../../utils/types'
-import {useActions} from '../../utils/redux-utils'
+import {appActions} from "features/CommonActions/App"
+import {AppRootStateType} from "utils/types"
+import {useActions} from "utils/redux-utils"
 import {Snackbar} from "@mui/material";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
