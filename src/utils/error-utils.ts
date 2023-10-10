@@ -1,31 +1,33 @@
 import {appActions} from "features/CommonActions/App"
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import {ResponseType} from 'api/types'
+import { Dispatch } from "redux";
 
 // original type:
 // BaseThunkAPI<S, E, D extends Dispatch = Dispatch, RejectedValue = undefined>
-type ThunkAPIType = {
-    dispatch: (action: any) => any
-    rejectWithValue: Function
-}
 
 export const handleAsyncServerAppError = <D>(data: ResponseType<D>,
-                                             thunkAPI: ThunkAPIType,
+                                             dispatch: Dispatch,
                                              showError = true) => {
     if (showError) {
-        thunkAPI.dispatch(appActions.setAppError({error: data.messages.length ? data.messages[0] : 'Some error occurred'}))
+        dispatch(appActions.setAppError({error: data.messages.length ? data.messages[0] : 'Some error occurred'}))
     }
-    thunkAPI.dispatch(appActions.setAppStatus({status: 'failed'}))
-    return thunkAPI.rejectWithValue({errors: data.messages, fieldsErrors: data.fieldsErrors})
+    dispatch(appActions.setAppStatus({status: 'failed'}))
 }
 
-export const handleAsyncServerNetworkError = (error: AxiosError,
-                                              thunkAPI: ThunkAPIType,
+export const handleAsyncServerNetworkError = (error: unknown,
+                                              dispatch: Dispatch,
                                               showError = true) => {
-    if (showError) {
-        thunkAPI.dispatch(appActions.setAppError({error: error.message ? error.message : 'Some error occurred'}))
+    let errorMessage = 'Some error occurred';
+    if(axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error?.message || errorMessage;
+    } else if(error instanceof Error) {
+        errorMessage = `Native error: ${error.message}`;
+    } else {
+        errorMessage = JSON.stringify(error);
     }
-    thunkAPI.dispatch(appActions.setAppStatus({status: 'failed'}))
-
-    return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
+    if (showError) {
+        dispatch(appActions.setAppError({error: errorMessage}))
+    }
+    dispatch(appActions.setAppStatus({status: 'failed'}))
 }
