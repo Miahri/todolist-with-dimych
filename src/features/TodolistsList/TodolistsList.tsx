@@ -29,8 +29,9 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         const resultAction = await dispatch(thunk)
 
         if (todolistsActions.addTodolistTC.rejected.match(resultAction)) {
-            if (resultAction.payload?.errors?.length) {
-                const errorMessage = resultAction.payload?.errors[0]
+            let fieldError = resultAction.payload?.fieldsErrors;
+            if (fieldError?.length) {
+                const errorMessage = fieldError[0].error;
                 helper.setError(errorMessage)
             } else {
                 helper.setError('Some error occured')

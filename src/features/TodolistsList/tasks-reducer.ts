@@ -8,6 +8,8 @@ import { TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType } from "api
 import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 import { thunkTryCatch } from "utils/thunkTryCatch";
 
+const {setAppStatus} = appActions;
+
 const initialState: TasksStateType = {};
 
 export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string },
@@ -16,6 +18,7 @@ export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: s
     const { dispatch, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.getTasks(todolistId);
+      thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
       return { tasks: res.data.items, todolistId };
     });
   });
@@ -41,6 +44,7 @@ export const removeTask = createAppAsyncThunk<{ taskId: string, todolistId: stri
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.deleteTask(param.todolistId, param.taskId);
       if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
         return { taskId: param.taskId, todolistId: param.todolistId };
       } else {
         handleAsyncServerAppError(res.data, dispatch);
@@ -56,6 +60,7 @@ export const addTask = createAppAsyncThunk<TaskType, { title: string, todolistId
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.createTask(param.todolistId, param.title);
       if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
         return res.data.data.item;
       } else {
         handleAsyncServerAppError(res.data, dispatch);
@@ -89,6 +94,7 @@ export const updateTask = createAppAsyncThunk<{ taskId: string, model: UpdateDom
 
       const res = await todolistsAPI.updateTask(param.todolistId, param.taskId, apiModel);
       if (res.data.resultCode === 0) {
+        thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
         return param;
       } else {
         handleAsyncServerAppError(res.data, dispatch);
