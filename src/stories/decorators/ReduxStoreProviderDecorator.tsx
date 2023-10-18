@@ -9,10 +9,10 @@ import thunkMiddleware from 'redux-thunk'
 import {authReducer} from 'features/Auth'
 import {configureStore} from '@reduxjs/toolkit'
 import {HashRouter} from 'react-router-dom'
-import {AppRootStateType, RootReducerType} from 'utils/types'
+import {AppRootStateType} from 'utils/types'
 import {TaskPriorities, TaskStatuses} from 'api/types'
 
-const rootReducer: RootReducerType = combineReducers({
+const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
     app: appReducer,
