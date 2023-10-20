@@ -24,3 +24,11 @@
   opacity: 0.5;
 }
 */
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

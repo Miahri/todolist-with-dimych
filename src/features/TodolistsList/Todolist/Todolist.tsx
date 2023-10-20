@@ -77,11 +77,11 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         </Button>
     }
 
-    return <Paper style={{padding: '10px', position: 'relative'}}>
+    return <Paper style={{padding: '10px', position: 'relative', alignItems: 'center'}}>
         <IconButton
             size={'small'}
             onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}
-                    style={{position: 'absolute', right: '5px', top: '5px'}}
+                    style={{position: 'absolute', right: '15px', top: '15px'}}
         >
             <Delete fontSize={'small'}/>
         </IconButton>

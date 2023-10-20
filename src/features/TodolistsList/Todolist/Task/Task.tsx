@@ -42,7 +42,7 @@ export const Task = React.memo((props: TaskPropsType) => {
         />
 
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
-        <IconButton size={'small'} onClick={onClickHandler} style={{ position: 'absolute', top: '2px', right: '2px'} }>
+        <IconButton size={'small'} onClick={onClickHandler} style={{ position: 'absolute', top: '5px', right: '5px'} }>
             <Delete fontSize={'small'}/>
         </IconButton>
     </div>
