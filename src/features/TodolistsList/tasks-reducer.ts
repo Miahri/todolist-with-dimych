@@ -13,12 +13,12 @@ const {setAppStatus} = appActions;
 const initialState: TasksStateType = {};
 
 export const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string },
-  string>("application/initializeApp",
+  string>("tasks/fetchTasks",
   async (todolistId, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+    const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.getTasks(todolistId);
-      thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
+      dispatch(setAppStatus({ status: "succeeded" }));
       return { tasks: res.data.items, todolistId };
     });
   });

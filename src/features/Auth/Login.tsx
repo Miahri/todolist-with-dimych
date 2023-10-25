@@ -1,59 +1,14 @@
 import React from "react";
-import { FormikHelpers, useFormik } from "formik";
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { selectIsLoggedIn } from "./selectors";
-import { authActions } from "./index";
-import { useAppDispatch } from "utils/redux-utils";
-import { ResponseType } from "api/types";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
-
-type FormValuesType = {
-  email: string
-  password: string
-  rememberMe: boolean
-}
+import { useLogin } from "features/Auth/useLogin";
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
-
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
-  const formik = useFormik({
-    validate: (values) => {
-      if (!values.email) {
-        return {
-          email: "Email is required"
-        };
-      }
-      if (!values.password) {
-        return {
-          password: "Password is required"
-        };
-      }
-
-    },
-    initialValues: {
-      email: "",
-      password: "",
-      rememberMe: false
-    },
-    onSubmit: (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
-      dispatch(authActions.login(values))
-        .unwrap()
-        .catch((err: ResponseType) => {
-          err.fieldsErrors?.forEach((fieldError) => {
-            formikHelpers.setFieldError(fieldError.field, fieldError.error);
-          });
-        });
-
-    }
-  });
+  const { formik, isLoggedIn } = useLogin();
 
   if (isLoggedIn) {
     return <Navigate to={"/"} />;
   }
-
 
   return <Grid container justifyContent="center">
     <Grid item xs={4}>
