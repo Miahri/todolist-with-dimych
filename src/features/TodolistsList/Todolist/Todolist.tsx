@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect} from 'react'
-import {AddItemForm, AddItemFormSubmitHelperType} from 'components/AddItemForm/AddItemForm'
-import {EditableSpan} from 'components/EditableSpan/EditableSpan'
-import {Task} from './Task/Task'
-import {FilterValuesType, TodolistDomainType} from '../todolists-reducer'
-import {tasksActions, todolistsActions} from '../index'
-import {TaskStatuses, TaskType} from "api/types"
-import {useActions, useAppDispatch} from 'utils/redux-utils'
-import {Delete} from "@mui/icons-material";
-import {Button, IconButton, Paper} from "@mui/material";
+import React, { useCallback, useEffect } from "react";
+import { AddItemForm, AddItemFormSubmitHelperType } from "components/AddItemForm/AddItemForm";
+import { EditableSpan } from "components/EditableSpan/EditableSpan";
+import { FilterValuesType, TodolistDomainType } from "../todolists-reducer";
+import { tasksActions, todolistsActions } from "../index";
+import { TaskType } from "api/types";
+import { useActions, useAppDispatch } from "utils/redux-utils";
+import { Delete } from "@mui/icons-material";
+import { Button, IconButton, Paper } from "@mui/material";
+import { Tasks } from "features/TodolistsList/Todolist/Task/Tasks";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -60,14 +60,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         id: props.todolist.id
     }), [props.todolist.id])
 
-    let tasksForTodolist = props.tasks
 
-    if (props.todolist.filter === 'active') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New)
-    }
-    if (props.todolist.filter === 'completed') {
-        tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
-    }
 
     const renderFilterButton = (buttonFilter: FilterValuesType,
                                 color: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
@@ -78,30 +71,27 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         </Button>
     }
 
-    return <Paper style={{padding: '10px', position: 'relative', alignItems: 'center'}}>
+    return <Paper style={{ padding: "10px", position: "relative", alignItems: "center" }}>
         <IconButton
-            size={'small'}
-            onClick={removeTodolistHandler} disabled={props.todolist.entityStatus === 'loading'}
-                    style={{position: 'absolute', right: '15px', top: '15px'}}
+          size={"small"}
+          onClick={removeTodolistHandler} disabled={props.todolist.entityStatus === "loading"}
+          style={{ position: "absolute", right: "15px", top: "15px" }}
         >
-            <Delete fontSize={'small'}/>
+            <Delete fontSize={"small"} />
         </IconButton>
         <h3>
-            <EditableSpan value={props.todolist.title} onChange={changeTodolistTitleHandler}/>
+            <EditableSpan value={props.todolist.title} onChange={changeTodolistTitleHandler} />
         </h3>
-        <AddItemForm addItem={addTaskHandler} disabled={props.todolist.entityStatus === 'loading'}/>
+        <AddItemForm addItem={addTaskHandler} disabled={props.todolist.entityStatus === "loading"} />
         <div>
-            {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}/>)
-            }
-            {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>No task</div>}
+            <Tasks tasks={props.tasks} todolist={props.todolist}/>
         </div>
-        <div style={{paddingTop: '10px'}}>
-            {renderFilterButton('all', 'info', 'All')}
-            {renderFilterButton('active', 'primary', 'Active')}
-            {renderFilterButton('completed', 'secondary', 'Completed')}
+        <div style={{ paddingTop: "10px" }}>
+            {renderFilterButton("all", "info", "All")}
+            {renderFilterButton("active", "primary", "Active")}
+            {renderFilterButton("completed", "secondary", "Completed")}
         </div>
-    </Paper>
+    </Paper>;
 })
 
 
