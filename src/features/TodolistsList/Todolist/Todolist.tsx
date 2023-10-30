@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect } from "react";
 import { AddItemForm, AddItemFormSubmitHelperType } from "components/AddItemForm/AddItemForm";
 import { EditableSpan } from "components/EditableSpan/EditableSpan";
-import { FilterValuesType, TodolistDomainType } from "../todolists-reducer";
+import { TodolistDomainType } from "../todolists-reducer";
 import { tasksActions, todolistsActions } from "../index";
 import { TaskType } from "api/types";
 import { useActions, useAppDispatch } from "utils/redux-utils";
 import { Delete } from "@mui/icons-material";
-import { Button, IconButton, Paper } from "@mui/material";
+import { IconButton, Paper } from "@mui/material";
 import { Tasks } from "features/TodolistsList/Todolist/Task/Tasks";
+import { FilterTasksButton } from "features/TodolistsList/Todolist/Task/FilterTasksButton";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -17,7 +18,7 @@ type PropsType = {
 
 export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
     const {fetchTasks, addTask} = useActions(tasksActions)
-    const {changeTodolistFilter, removeTodolistTC, changeTodolistTitleTC} = useActions(todolistsActions)
+    const {removeTodolistTC, changeTodolistTitleTC} = useActions(todolistsActions)
 
     const dispatch = useAppDispatch()
 
@@ -55,22 +56,6 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
         changeTodolistTitleTC({id: props.todolist.id, title: title})
     }, [props.todolist.id])
 
-    const changeTodolistFilterHandler = useCallback((filter: FilterValuesType) => changeTodolistFilter({
-        filter: filter,
-        id: props.todolist.id
-    }), [props.todolist.id])
-
-
-
-    const renderFilterButton = (buttonFilter: FilterValuesType,
-                                color: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning',
-                                text: string) => {
-        return <Button variant={props.todolist.filter === buttonFilter ? 'outlined' : 'text'}
-                       onClick={() => changeTodolistFilterHandler(buttonFilter)}
-                       color={color}>{text}
-        </Button>
-    }
-
     return <Paper style={{ padding: "10px", position: "relative", alignItems: "center" }}>
         <IconButton
           size={"small"}
@@ -87,9 +72,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
             <Tasks tasks={props.tasks} todolist={props.todolist}/>
         </div>
         <div style={{ paddingTop: "10px" }}>
-            {renderFilterButton("all", "info", "All")}
-            {renderFilterButton("active", "primary", "Active")}
-            {renderFilterButton("completed", "secondary", "Completed")}
+            <FilterTasksButton todolist={props.todolist}/>
         </div>
     </Paper>;
 })
