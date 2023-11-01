@@ -22,13 +22,13 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     const dispatch = useAppDispatch()
 
-    const {fetchTodolistsTC} = useActions(todolistsActions)
+    const {fetchTodolistsTC, addTodolistTC} = useActions(todolistsActions)
 
-    const addTodolistCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
-        let thunk = todolistsActions.addTodolistTC(title)
+    const addTodolistHandler = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
+        let thunk = addTodolistTC(title)
         const resultAction = await dispatch(thunk)
 
-        if (todolistsActions.addTodolistTC.rejected.match(resultAction)) {
+        if (addTodolistTC.rejected.match(resultAction)) {
             let fieldError = resultAction.payload?.fieldsErrors;
             if (fieldError?.length) {
                 const errorMessage = fieldError[0].error;
@@ -56,7 +56,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolistCallback}/>
+            <AddItemForm addItem={addTodolistHandler}/>
         </Grid>
         <Grid container spacing={3} style={{flexWrap: 'nowrap', overflowX: 'scroll'}}>
             {
