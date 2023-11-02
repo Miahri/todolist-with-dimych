@@ -1,5 +1,5 @@
 import { authAPI } from "api/todolists-api";
-import { createSlice } from "@reduxjs/toolkit";
+import { AnyAction, createSlice } from "@reduxjs/toolkit";
 import { appActions } from "../CommonActions/App";
 import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 import { thunkTryCatch } from "utils/thunkTryCatch";
@@ -33,15 +33,35 @@ export const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(initializeApp.fulfilled, (state, _) => {
-        state.isInitialized = true;
-      })
-      .addCase(appActions.setAppStatus, (state, action) => {
-        state.status = action.payload.status;
-      })
       .addCase(appActions.setAppError, (state, action) => {
         state.error = action.payload.error;
-      });
+      })
+      .addMatcher(
+        (action: AnyAction) => {
+          console.log("addMatcher predicate", action.type);
+          return action.type.endsWith('/pending');
+        },
+        (state, action) => {
+          console.log("addMatcher reducer", action.type);
+          state.status = "loading";
+        }
+      );
+    builder.addMatcher(
+      (action: AnyAction) => {
+        return action.type.endsWith('/rejected');
+      },
+      (state) => {
+        state.status = "failed";
+      }
+    );
+    builder.addMatcher(
+      (action: AnyAction) => {
+        return action.type.endsWith('/fulfilled');
+      },
+      (state) => {
+        state.status = "succeeded";
+      }
+    );
   }
 });
 

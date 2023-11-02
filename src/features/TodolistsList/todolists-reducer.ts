@@ -11,10 +11,10 @@ const {setAppStatus} = appActions;
 
 const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, undefined>(
   "todolists/fetchTodolists", async (_, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+    const { dispatch } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.getTodolists();
-      thunkAPI.dispatch(setAppStatus({ status: "succeeded" }));
+      dispatch(setAppStatus({ status: "succeeded" }));
       return { todolists: res.data };
     });
   });
