@@ -1,6 +1,6 @@
 import { authAPI } from "api/todolists-api";
 import { handleAsyncServerAppError, handleAsyncServerNetworkError } from "utils/error-utils";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoginParamsType } from "api/types";
 import { appActions } from "../CommonActions/App";
 import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
@@ -58,12 +58,16 @@ export const slice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(login.fulfilled, (state) => {
-        state.isLoggedIn = true;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.isLoggedIn = false;
-      });
+      .addMatcher(
+      (action: AnyAction) => {
+        return action.type === "auth/login/fulfilled" ||
+          action.type === "auth/logout/fulfilled" ||
+          action.type === "app/initializeApp/fulfilled";
+      },
+      (state, action) => {
+        state.isLoggedIn = action.payload.isLoggedIn;
+      }
+    );
   }
 });
 
