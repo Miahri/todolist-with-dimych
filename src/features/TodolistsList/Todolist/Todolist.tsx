@@ -9,31 +9,33 @@ import { FilterTasksButton } from "features/TodolistsList/Todolist/FilterTasksBu
 import { TodolistsCardHeader } from "features/TodolistsList/Todolist/TodolistsCardHeader";
 
 type PropsType = {
-    todolist: TodolistDomainType
-    tasks: Array<TaskType>
-    demo?: boolean
+  todolist: TodolistDomainType
+  tasks: Array<TaskType>
+  demo?: boolean
 }
 
-export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
-    const {fetchTasks} = useActions(tasksActions)
+export const Todolist = React.memo(function({ demo = false, ...props }: PropsType) {
+  const { fetchTasks } = useActions(tasksActions);
 
-    useEffect(() => {
-        if (demo) {
-            return
-        }
-        fetchTasks(props.todolist.id)
-    }, [])
+  useEffect(() => {
+    if (demo) {
+      return;
+    }
+    if (!props.tasks.length) {
+      fetchTasks(props.todolist.id);
+    }
+  }, []);
 
-    return <Paper style={{ padding: "10px", position: "relative", alignItems: "center" }}>
-        <TodolistsCardHeader todolist={props.todolist} />
-        <div>
-            <Tasks tasks={props.tasks} todolist={props.todolist}/>
-        </div>
-        <div style={{ paddingTop: "10px" }}>
-            <FilterTasksButton todolist={props.todolist}/>
-        </div>
-    </Paper>;
-})
+  return <Paper style={{ padding: "10px", position: "relative", alignItems: "center" }}>
+    <TodolistsCardHeader todolist={props.todolist} />
+    <div>
+      <Tasks tasks={props.tasks} todolist={props.todolist} />
+    </div>
+    <div style={{ paddingTop: "10px" }}>
+      <FilterTasksButton todolist={props.todolist} />
+    </div>
+  </Paper>;
+});
 
 
 

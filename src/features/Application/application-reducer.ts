@@ -1,9 +1,10 @@
 import { authAPI } from "api/todolists-api";
-import { AnyAction, createSlice } from "@reduxjs/toolkit";
+import { AnyAction, createSlice, isPending } from "@reduxjs/toolkit";
 import { appActions } from "../CommonActions/App";
 import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
 import { thunkTryCatch } from "utils/thunkTryCatch";
 import { handleAsyncServerAppError } from "utils/error-utils";
+import { tasksActions, todolistsActions } from "features/TodolistsList";
 
 const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>
 ("application/initializeApp", async (_, thunkAPI) => {
@@ -36,12 +37,10 @@ export const slice = createSlice({
       .addCase(appActions.setAppError, (state, action) => {
         state.error = action.payload.error;
       })
-      .addMatcher(
-        (action: AnyAction) => {
-          console.log("addMatcher predicate", action.type);
-          return action.type.endsWith('/pending');
-        },
-        (state, action) => {
+      .addCase(initializeApp.fulfilled, (state, _) => {
+        state.isInitialized = true;
+      })
+      .addMatcher(isPending(todolistsActions.fetchTodolistsTC, tasksActions.addTask), (state, action) => {
           console.log("addMatcher reducer", action.type);
           state.status = "loading";
         }
