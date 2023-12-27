@@ -2,7 +2,7 @@ import {AllTasksType} from "app/App/App";
 import {
     addTaskTC,
     fetchTasksTC, removeTaskTC,
-    tasksReducer, updateTaskAC
+    tasksReducer, updateTaskTC
 } from "features/Todolists/tasks-reducer";
 import {addTodolistAC, removeTodolistAC} from "features/Todolists/todolist-reducer";
 import {TaskPriorities, TaskStatuses} from "api/todolists-api";
@@ -58,7 +58,8 @@ test('correct task should be added to correct array', () => {
 });
 
 test('status of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: "2", model: {status: TaskStatuses.New}, todolistId: "todolist2"});
+    const param = {taskId: "2", domainModel: {status: TaskStatuses.New}, todolistId: "todolist2"}
+    const action = updateTaskTC.fulfilled(param, 'requestId', param);
 
     const endState = tasksReducer(startState, action);
 
@@ -68,7 +69,8 @@ test('status of specified task should be changed', () => {
 });
 
 test('title of specified task should be changed', () => {
-    const action = updateTaskAC({taskId: "2", model: {title: "Milkyway"}, todolistId: "todolist2"});
+    const param = {taskId: "2", domainModel: {title: "Milkyway"}, todolistId: "todolist2"}
+    const action = updateTaskTC.fulfilled(param, 'requestId', param);
 
     const endState = tasksReducer(startState, action);
 

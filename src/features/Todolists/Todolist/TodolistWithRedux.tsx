@@ -45,12 +45,12 @@ export const TodolistWithRedux = React.memo((props: TodolistPropsType) => {
         dispatch(removeTaskTC({taskId, todolistId}));
     }, [dispatch])
 
-    const changeStatus = useCallback((id: string, status: TaskStatuses, todoListId: string) => {
-        dispatch(updateTaskTC(id, {status}, todoListId));
+    const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
+        dispatch(updateTaskTC({taskId: id, domainModel: {status}, todolistId}));
     }, [dispatch])
 
-    const onChangeTaskTitle = useCallback((id: string, title: string, todoListId: string) => {
-        dispatch(updateTaskTC(id, {title}, todoListId));
+    const onChangeTaskTitle = useCallback((id: string, title: string, todolistId: string) => {
+        dispatch(updateTaskTC({taskId: id, domainModel: {title}, todolistId}));
     }, [dispatch])
 
     const addTask = useCallback((title: string) => {
